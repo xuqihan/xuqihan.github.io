@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com" />
+  
+  
+  
+  <title>网络复习 ————钊 | Xuqihan</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="网络," />
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="xuqihan_BK">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  
+<script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">Xuqihan.com</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a 
+              href="/"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_blank"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_blank"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_blank"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a 
+              href="/friends/"
+              target="_blank"
+            >
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_blank"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="">
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a 
+                    href="https://github.com/xuqihan" 
+                    target="_blank"
+                  >
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a 
+                    href="https://www.zhihu.com/people/godbmw/activities" 
+                    target="_blank"
+                  >
+                    微博
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>网络复习 ————钊</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2021-12-07
+    </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="网络复习Yuke"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h4 id="网络基础-："><a href="#网络基础-：" class="headerlink" title="网络基础  ："></a><strong>网络基础</strong>  ：</h4><p>七层协议（物理层、数据链路层、网络层、传输层、会话层、表示层、应用层） 物数网传会表应</p>
+<hr>
+<h4 id="数据封装-："><a href="#数据封装-：" class="headerlink" title="数据封装  ："></a><strong>数据封装</strong>  ：</h4><p>在OSI 七层张红数据是从上到下进行封装发送出的 然后对数据从下到上接受，但是上层（网络层）关心的是IP地址 下层关心的是MAC地址 知识后需要映射IP和MAC </p>
+<hr>
+<h4 id="包分析："><a href="#包分析：" class="headerlink" title="包分析："></a>包分析：</h4><hr>
+<h4 id="TCP和UDP-："><a href="#TCP和UDP-：" class="headerlink" title="TCP和UDP ："></a>TCP和UDP ：</h4><p>tcp 和 UDP 都属于传输层负责不同主机之间的通信<br>区别：TCP是面向连接的 UDP是无连接的<br>TCP  面向连接的意思就是指事先建立连接然后才能通信 例如 三次握手和四次挥手 TCP连接的数据无差错  无差错 不丢失 不重复 并且按序到达<br>TCP通过校验和重传控制（特定时间没有发送回应就会重传），序号标示（因为没有回应可能是ACK丢失很多重复的数据会根据序列号把重复的数据删除）、<br>拥塞控制（会找相对数据量小的口进，避免给网络造成太大压力的折中方案 ）、滑动窗口（窗口指的是不需要等待就能发送的数据的最大值，窗口越大吞吐量越大）、<br>确认应答、实现可靠传输，丢包时的重发控制、还可以的对次序掉乱的分包进行顺序控制TCP的连接只能是点到点的<br>TCP对系统资源要求比较多<br>TCP首部较长20字节  UDP首部较短</p>
+<h5 id="TCP三次握手："><a href="#TCP三次握手：" class="headerlink" title="TCP三次握手："></a>TCP三次握手：</h5><h5 id="第一次握手："><a href="#第一次握手：" class="headerlink" title="第一次握手："></a>第一次握手：</h5><p>A-&gt;B发送含有同步序列号标志位的数据段（SYN）给主机B，向主机B请求建立连接 传输了两个含义</p>
+<p>1、我想要和你通信 2、你可以使用那个序列号作为起始数据段来回应我</p>
+<h5 id="第二次握手："><a href="#第二次握手：" class="headerlink" title="第二次握手："></a>第二次握手：</h5><p>主机B收到主机A的请求后，用一个带有确认应答（ACK）和同步序列号（SYN）的数据段响应给主机A也告诉主机A两件事<br>1、我已经收到你的请求了，你可以传输数据了，2、你要用那个序列号作为起始数据段来回应我</p>
+<h5 id="第三次握手："><a href="#第三次握手：" class="headerlink" title="第三次握手："></a>第三次握手：</h5><p>主机A收到这个数据段后，在发送一个确认应答，确认已经收到主机B的数据段1、我收到恢复了我要开始传输数据了</p>
+<h5 id="TCP四次挥手："><a href="#TCP四次挥手：" class="headerlink" title="TCP四次挥手："></a>TCP四次挥手：</h5><p>1、当主机A完成数据传输后 将控制为（FIN）变成1 提出停止TCP连接的请求<br>2、主机B收到FIN后对其作出响应，确认这一方向的TCP连接即将关闭，讲ACK 设置成为1<br>3、由B端在提出反方向的关闭请求、讲FIN 变成1<br>4、主机A对主机B的请求进行确认，讲ACK设置成1 双方向的关闭结束。</p>
+<p>UDP 指的是 就是无连接的就是发送数据之前不需要建立连接  UDP会尽最大的努力交付 只管给不保证可靠的交互<br>UDP有很好的实效性 工作效率更高适用于对高速传输和实时性有较高的通信或广播通信<br>UDP支持一对一 一对多 多对一 和多对多   UDP对系统资源要求较少</p>
+<h5 id="为什么UDP有时比TCP更有优势"><a href="#为什么UDP有时比TCP更有优势" class="headerlink" title="为什么UDP有时比TCP更有优势"></a>为什么UDP有时比TCP更有优势</h5><p>UDP简单 传输速度快 在很多场景下能保证同步 比如实时游戏<br>（1） 网速的提升给UDP的稳定性提供了网络保证 丢包率很低 并且使用应用层重传 能确保传输的可靠性<br>（2） TCP为了实现网络通信的可靠性 使用复杂的拥塞控制算法 建立繁琐的握手过程<br>如果采用 TCP 一旦发生丢包 TCP会将后续的包缓存起来，等前面的包重传并接受到后继续发送，延时会越来越大，基于UDP对实时性要求较为严格的情况下采用自定义重传机制<br>能报把丢包产生的延迟降低到最低，尽量减少网络问题对游戏性造成影响</p>
+<hr>
+<h4 id="arp-工作原理："><a href="#arp-工作原理：" class="headerlink" title="arp 工作原理："></a>arp 工作原理：</h4><p>地址解析协议 目的是实现IP地址到MAC地址的转换   只知道IP地址但是不知道MAC地址</p>
+<p>例如PC1 ping PC2       PC1    事先没有    PC2的MAC地址只有PC2的IP地址 首先PC1会发送广播 看谁会接收到了交换机他会根据PC1发送的目的IP找到PC2  这时候PC2就会把PC1的IP和MAC地址对应起来放到自己的缓存之中，再通过交换机回复PC1 这时PC1就知道了谁是PC2就会把PC2的IP地址和MAC地址对应起来放到PC1的缓存中</p>
+<p>PC1以广播的方式发送PC2接收到对应的信息以单播的形式回复给PC1</p>
+<h6 id="arp欺骗："><a href="#arp欺骗：" class="headerlink" title="arp欺骗："></a>arp欺骗：</h6><p>通过kali将自己的MAC地址绑定成网关的地址  这是PC1就不知道谁是网关了 就会断网</p>
+<h6 id="arp攻击："><a href="#arp攻击：" class="headerlink" title="arp攻击："></a>arp攻击：</h6><p>因为每次交换机会将流经自己的IP和MAC对应起来建立一张表，正常PC1访问PC2会发送广播，PC3不会接受，但是攻击的话就会PC3就会接收PC1的请求并且告诉PC1我是PC2 把自己的MAC地址绑定到PC2的IP上在发送给PC1这时候PC1会接到2个应答   这时PC3会无限发 总有一条会覆盖真正的PC2的请求就会让PC1跟PC3建立连接</p>
+<hr>
+<h4 id="ICMP-："><a href="#ICMP-：" class="headerlink" title="ICMP ："></a>ICMP ：</h4><p>属于网络层协议对数据的封装 </p>
+<p>大致分为两种 分别是差错通知（指的是有错误信息的时候报告错误原因）和信息查询 （当向目标发送请求时返回所要查询的信息）</p>
+<p>type：0属于回显应答报文显示，8属于请求回显报文</p>
+<hr>
+<h4 id="设备管理："><a href="#设备管理：" class="headerlink" title="设备管理："></a>设备管理：</h4><p> 进入root模式改名之类的 （怎么连接交换机 串口 咋连  波特率  9600  115200）</p>
+<p>正常进入ENSP的话相当于在路由器直接更改设备，但是实际环境中我们要是需要用XSHeel通过ip地址连接路由器进行更改路由的设置，还有一种方法就是有Serira线连接自己的电脑 PC 通过波特率来连接路由器并更改设置，</p>
+<hr>
+<p>高级没必要 ssh 协议  telnet 协议 </p>
+<hr>
+<h3 id="路由-（TTL—-gt-跳数）"><a href="#路由-（TTL—-gt-跳数）" class="headerlink" title="路由 （TTL—&gt;跳数）"></a>路由 （TTL—&gt;跳数）</h3><h5 id="静态路由和默认路由-（DR和BDR-优先级，优先级大设就是DR优先执行）"><a href="#静态路由和默认路由-（DR和BDR-优先级，优先级大设就是DR优先执行）" class="headerlink" title="静态路由和默认路由   （DR和BDR  优先级，优先级大设就是DR优先执行）"></a>静态路由和默认路由   （DR和BDR  优先级，优先级大设就是DR优先执行）</h5><p>管理员手动添加的路由</p>
+<p>静态路由的缺点是不能动态的反应网络的拓扑，就是指流经过此路由器需要写下一条的位置，就是ip route 目标网络地址 子网掩码 下一跳地址/本地接口，默认路由就是不管Router(config)#ip route 0.0.0.0 0.0.0.0 下一跳地址/本地接口</p>
+<p>静态路由的优先级更高，如果同时设定了静态路由和默认路由，走静态</p>
+<hr>
+<h5 id="动态路由-rip（距离矢量路由选择协议）应用层-UDP"><a href="#动态路由-rip（距离矢量路由选择协议）应用层-UDP" class="headerlink" title="动态路由 rip（距离矢量路由选择协议）应用层 UDP"></a>动态路由 rip（距离矢量路由选择协议）应用层 UDP</h5><p> 首先设定启动rip协议 router rip 然后设置版本 ver 2   设置直连的网段  比如1.0 段和2.0 网段</p>
+<p>rip会计算跳数最大为15跳 16跳为不可达（每30s更新）只会向相邻的路由器发送</p>
+<p>只会按跳数短的算    （即使经过10个路由器距离1m，还有一条路就经过2个路由器但是距离20</p>
+<p>m而会走 2个路由器的）</p>
+<hr>
+<h5 id="动态路由OSPF-开放最短路径优先协议-：计算链路的度量值"><a href="#动态路由OSPF-开放最短路径优先协议-：计算链路的度量值" class="headerlink" title="动态路由OSPF(开放最短路径优先协议)：计算链路的度量值"></a>动态路由OSPF(开放最短路径优先协议)：计算链路的度量值</h5><p>就是路程最短的，发现邻居，路由器启动OSPF进程的话，会向周围的邻居发送hello报文，邻居接受到hello报文，也会发一个报文给a，然后就建立链接了。。。。。。</p>
+<p>然后建立一个域，这个域里面存放的是直连的IP地址网段</p>
+<p>Hello报文携带参数，建立和维持邻居关系再多路访问中选举DR、BDR</p>
+<h5 id="（环路形成原因和避免方式，网路冗余链路也会造成环路）"><a href="#（环路形成原因和避免方式，网路冗余链路也会造成环路）" class="headerlink" title="（环路形成原因和避免方式，网路冗余链路也会造成环路）"></a>（环路形成原因和避免方式，网路冗余链路也会造成环路）</h5><p>当一段网络突然间不可达时 R1已经将 这段网络的路由条目删除，但是还没想旁边的路由器更新，此时R2的路由更新计时器超时，会将自己的路由信息发送给R1 R1 又学习到他的路由信息，这时就又有网络1的信息，然后就会设置距离+1 ，当R1更新后 R1又向R2发送自己的路由信息    无限制循环让距离变的无限大</p>
+<p>解决方法：</p>
+<p>1、最大条数计算：RIP最大跳数就是15 任何需要经过16跳能到的都是不可达的 所以就会解决跳数无限大的问题</p>
+<p>2、水平分割，限制路由不能按照接受信息的方向去讲接收到的信息在发送回去，更新数据的时候不能吧 网络1的信息再从同一个口发出</p>
+<p>3、触发更新，RIP是默认30s发送，但是如果遇到网络拓扑发生变化时（突然间一个网络不好用时）路由器就发送给邻居的路由器而不用等待更新计时器</p>
+<hr>
+<h5 id="浮动路由-（实现路由备份）preference-1-100-设置优先级-100最高"><a href="#浮动路由-（实现路由备份）preference-1-100-设置优先级-100最高" class="headerlink" title="浮动路由  （实现路由备份）preference 1~100 设置优先级  100最高"></a>浮动路由  （实现路由备份）preference 1~100 设置优先级  100最高</h5><p>是实现两部分通信时，之恋俩路作为主要链路，通过总部的链路为备用链路，就是如果当主链路发生故障可以使用备用链路保障两部分可以正常通信实现网络冗余。</p>
+<h5 id="DR选举"><a href="#DR选举" class="headerlink" title="DR选举"></a>DR选举</h5><p>DR选举，就是所有路由器都尝试成为DR，最高优先级者最终成为DR，然后选举BDR，次高优先级者成为BDR</p>
+<hr>
+<h5 id="访问控制-ACL实验（题）-两个pc-能访问服务器-互相不能访问"><a href="#访问控制-ACL实验（题）-两个pc-能访问服务器-互相不能访问" class="headerlink" title="访问控制 ACL实验（题）  两个pc 能访问服务器 互相不能访问"></a>访问控制 ACL实验（题）  两个pc 能访问服务器 互相不能访问</h5><p>ACL的原理就是在一条网络上设定很多规则是否允许通过的标准，如果设定了很多条规则，会按照从小到大的顺序执行，如果遇到相匹配的规则就会停止，后面的代码就自动不执行了，相当于有多个IP通过，只要有一个匹配了，就会停止</p>
+<p><img src="C:\Users\Qingzhao.Luo\AppData\Roaming\Typora\typora-user-images\image-20211206201724520.png" alt="image-20211206201724520"></p>
+<ul>
+<li><strong>动作</strong>：包括permit/deny两种动作，表示允许/拒绝。</li>
+<li><a target="_blank" rel="noopener" href="https://support.huawei.com/enterprise/zh/doc/EDOC1000154609/3698e3b4">配置并应用基本ACL - AR100, AR120, AR150, AR160, AR200, AR1200, AR2200, AR3200, AR3600 V200R008 配置指南-安全（命令行） - 华为 (huawei.com)</a></li>
+</ul>
+<hr>
+<h5 id="PPP认证-（点对点协议）链路层协议"><a href="#PPP认证-（点对点协议）链路层协议" class="headerlink" title="PPP认证   （点对点协议）链路层协议"></a>PPP认证   （点对点协议）链路层协议</h5><h5 id="（PAP是明文的方式在传输不安全、CHAP采用的是MD5比较安全）"><a href="#（PAP是明文的方式在传输不安全、CHAP采用的是MD5比较安全）" class="headerlink" title="（PAP是明文的方式在传输不安全、CHAP采用的是MD5比较安全）"></a>（PAP是明文的方式在传输不安全、CHAP采用的是MD5比较安全）</h5><p>在同一条物理链路上进行点对点之间的数据传输，对数据链路层的真不进行纠错，不需要流量控制</p>
+<p>可以在一跳链路上支持多种网络层协议</p>
+<p>首先必须搭建OSPF网络，为了提升分部和总部通信的安全性，在R1和R3之间配置PAP认证，R3为认证路由，R1为被认证路由：ppp authentication-mode pap domain  huawei   模式为PAP设置</p>
+<p>local-user R1@huaweiyu password cipher huawei添加一个新的用户，这样的话想通过这个路由器就需要进行验证、local-user R1@huaweiyu service-type ppp    现在R1就不同R3了。</p>
+<p>此时R1应该设置为ppp pap local-user R1@huaweiyu password cipher huawei    就可以重新通信了</p>
+<p>ps：PPP链路建成的时候一定要重启端口认证才能生效使，因为两者已经建立通信了，只有关闭重启才能让协议生效，认证方式才能生效。</p>
+<hr>
+<h5 id="（两种）NAT-服务器怎么配置（私有的网络进入公网怎么转换）"><a href="#（两种）NAT-服务器怎么配置（私有的网络进入公网怎么转换）" class="headerlink" title="（两种）NAT 服务器怎么配置（私有的网络进入公网怎么转换）"></a>（两种）NAT 服务器怎么配置（私有的网络进入公网怎么转换）</h5><p>多对一转换成1个公网IP地址转发出去</p>
+<p>ip nat inside source static 192.168.5.1 123.1.1.3</p>
+<p>ip nat inside 出去的IP地址  对应的的  公网地址是 IP nat outside </p>
+<p>1）确定内网IP地址以及转成具体哪个公网IP地址（对应的就是一个公网地址池）<br>2） 配置NAT静态一对一映射关系(动态的就是多对多)<br>3） 定义NAT inside接口和outside接口（记住）<br>4）验证：show ip nat translation \ show ip nat statis \debug ip nat–开启debug用于排除错误（查看NAT转换记录）</p>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42022374/article/details/90747098">https://blog.csdn.net/weixin_42022374/article/details/90747098</a></p>
+<hr>
+<h3 id="交换"><a href="#交换" class="headerlink" title="交换"></a>交换</h3><h5 id="PVID和VID的区别："><a href="#PVID和VID的区别：" class="headerlink" title="PVID和VID的区别："></a>PVID和VID的区别：</h5><p>vid相当于是VLAN的标识定义其中的端口可以接受发自这个VLAN的包</p>
+<p>pvid相当于是交换机上端口的属性 可以把不带vlan标识头的信息打上相同的pvid传出去</p>
+<h4 id="交换机上有三种端口模式Access、Hybrid、Trunk（重点）"><a href="#交换机上有三种端口模式Access、Hybrid、Trunk（重点）" class="headerlink" title="交换机上有三种端口模式Access、Hybrid、Trunk（重点）"></a>交换机上有三种端口模式Access、Hybrid、Trunk（重点）</h4><p>Access类型的端口只能属于一个VLAN 一般用于连接计算机的端口可以发送</p>
+<p>Trunk类型的端口可以允许多个VLAN通过，可以接收和发送多个VLAN的报文，一般用于交换机连接的端口上</p>
+<p>Hybrid类型的端口可以允许多个VLAN通过，可以接收和发送多个VLAN报文，可以用来交换机之间的连接，也可以用于连接用户的计算机，默认就是Hybrid</p>
+<p>Hybrid和Trunk之间的区别是：流经多个VLAN数据时Hybrid可以不用打标签，Trunk只有缺省路由可以不用打标签</p>
+<h5 id="什么是缺省路由（默认路由）"><a href="#什么是缺省路由（默认路由）" class="headerlink" title="什么是缺省路由（默认路由）"></a>什么是缺省路由（默认路由）</h5><p>Access只有一个VLAN所以它本身就是缺省路由 不用特殊设置</p>
+<p>trunk端口收报文：<br>　　收到一个报文，判断是否有VLAN信息：如果有，判断该trunk端口是否允许该 VLAN的数据进入：如果可以则转发，否则丢弃；如果没有VLAN信息则打上端口的PVID，并进行交换转发。<br>　　trunk端口发报文：<br>　　比较将要发送报文的VLAN信息和端口的PVID，如果不相等则直接发送。如果两者相等则剥离VLAN信息，再发送。<br>　　（所以，将交换机级连口统统设置为Trunk并允许所有VLAN通过后，VLAN2－VLAN4000直接透传，而VLAN1则因为和Trunk缺省PVID相同，需要通过剥离VLAN信息又添加VLAN信息实现了透传。而如果更改Trunk的缺省PVID，则可以实现某一交换机下的VLAN-X和另一交换机下的VLAN-Y通信。）<br>　　hybrid端口收报文：<br>　　收到一个报文,判断是否有VLAN信息：如果有，则判断该hybrid端口是否允许该VLAN的数据进入：如果可以则转发，否则丢弃(此时端口上的untag配置是不用考虑的，untag配置只对发送报文时起作用)；<br>　　如果没有则打上端口的PVID，并进行交换转发。<br>　　hybrid端口发报文：<br>　　1、判断该VLAN在本端口的属性（disp interface 即可看到该端口对哪些VLAN是untag，哪些VLAN是tag）<br>　　2、如果是untag则剥离VLAN信息，再发送，如果是tag则直接发送 </p>
+<h5 id="STP生成树（最短路径（coast最小的开销），顺序-三层-）"><a href="#STP生成树（最短路径（coast最小的开销），顺序-三层-）" class="headerlink" title="STP生成树（最短路径（coast最小的开销），顺序, 三层 ）"></a>STP生成树（最短路径（coast最小的开销），顺序, 三层 ）</h5><p>三层结构分别为：核心层，分布层，接入层（采取了链路冗余技术）STP就是为了防止环路造成损失，确保网络中所有的目的地只有一条逻辑路径，就跟一棵树一样</p>
+<p>1、首先选举根桥（ID最小的，每个桥的ID（BID）会封装在BPDU里面，每个交换机广播都会收到BPDU和发送自身的BPDU，哪个BID最小就是根桥了，MAC地址小的就是）</p>
+<p>2、每个非根桥交换机计算到达根桥的最短路径</p>
+<p>3、选择活动端口以及端口的角色类型</p>
+<p>三种端口：根端口（非根桥的端口中开销最小的），指定端口（就是根桥的端口），非指定端口</p>
+<p>如果网络拓扑出现变化经过五种状态：禁用-&gt;阻塞-&gt;监听-&gt;学习-&gt;转发</p>
+<hr>
+<h5 id="单臂路由"><a href="#单臂路由" class="headerlink" title="单臂路由"></a>单臂路由</h5><p>单臂路由就是包从哪个口进去，又从哪个口出来，而不象传统网络拓扑中数据包从某个接口进入路由器又从另一个接口离开路由器。就是为了完成实现三层路由，规模变大，2层的交换机不能放弃，只需要在原有的基础上加上一个路由器就可以，</p>
+<p>配置就是PC之间用户用acc  路由器交换机之间用trunk</p>
+<p>然后再路由器上使用一个物理接口划分多个逻辑子接口</p>
+<p>设定就是dot1q 剥离出来对应的vlan信息    设置IP地址 相当于vlanif的IP地址  并且最后需要启动ARP学习其他的MAC只有这样才能实现转发和相同</p>
+<hr>
+<p> vrp vrrp  是干啥的   owasptop10</p>
+<hr>
+<h5 id="IP地址规划"><a href="#IP地址规划" class="headerlink" title="IP地址规划"></a>IP地址规划</h5><p>A类地址</p>
+<p>前八位为网络号，后24为为主机号</p>
+<p>A类地址范围：1.0.0.0~127.255.255.255    子网掩码8    255.0.0.0    </p>
+<p>1.0.0.0是主机地址  127.255.255.255是广播地址   可用主机就是 除了他俩以外的</p>
+<p>B类地址</p>
+<p>前十六位为网络号，后十六位为主机号</p>
+<p>B类地址范围：128.0.0.0~191.255.255.255 子网掩码 16 255.255.0.0   </p>
+<p>C类地址   192.0.0.0~223.255.255.255   z子网掩码   24    255.255.255.0</p>
+<p> D类地址 224.0.0.0~239.255.255.255</p>
+<p>私有地址就是内部网址用的网段一般都用 ：10.0.0.0<del>10.255.255.255    /     172.16.0.0</del>172.31.255.255  /192.168.0.0~192.168.255.255  </p>
+<hr>
+<p>  计算ip 范围   。。子网掩码   </p>
+<p>安全法  发布于2016年11月   实行是2017年6月</p>
+
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : Xuqihan <br/>
+        
+        原文链接 : <a href="">http://example.com/2021/12/07/%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0Yuke/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share"
+  style="margin-top: -2rem"
+  data-wechat-qrcode-title="<p>微信扫一扫</p>"
+  data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>"
+   data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter" 
+  
+>
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async>
+  
+
+  
+    <div id="reward">
+  
+    <p id="reward-meta">知识 & 情怀 | 二者兼得</p>
+  
+  <button id="reward-btn">
+    
+    <span>投食</span>
+  </button>
+  <div id="reward-qrcode">
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/wechat.png" alt="微信扫一扫, 向我投食">
+        <p class="qrcode-meta">微信扫一扫, 向我投食</p>
+      </div>
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/alipay.png" alt="支付宝扫一扫, 向我投食">
+        <p class="qrcode-meta">支付宝扫一扫, 向我投食</p>
+      </div>
+    
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    let button = document.querySelector('#reward-btn'),
+      qrcode = document.querySelector('#reward-qrcode'),
+      display = false;
+    
+    button.addEventListener('click', () => {
+      qrcode.style.display = display ? 'none' : 'block'
+      display = !display
+    }, false)
+  })()
+</script>
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/%E7%BD%91%E7%BB%9C/">
+              #网络
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2021/12/07/%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%E9%92%8A/" target="_self">网络复习—钊</a>
+      </div>
+    
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz",
+      appKey: "WaR7nrzhliHj9aVwdQzkdlGd",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz", "WaR7nrzhliHj9aVwdQzkdlGd");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a target="_blank" rel="noopener" href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a target="_blank" rel="noopener" href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+      路遥星辞，过往不念
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2021, 10, 13).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
