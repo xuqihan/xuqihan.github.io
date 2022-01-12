@@ -261,7 +261,7 @@
 <h4 id="1-2-传输层"><a href="#1-2-传输层" class="headerlink" title="1.2 传输层"></a>1.2 传输层</h4><h5 id="1-2-1-常用端口号"><a href="#1-2-1-常用端口号" class="headerlink" title="1.2.1 常用端口号"></a>1.2.1 常用端口号</h5><p>（TCP) : HTTP 80    FTP 20/21    Telnet 23    SMTP 25(的电子邮件传输的协议)    DNS 53</p>
 <p>（UDP) : DNS 53    BootP 67/ 68    TFTP 69    SNMP 161</p>
 <h5 id="1-2-2-TCP工作过程"><a href="#1-2-2-TCP工作过程" class="headerlink" title="1.2.2 TCP工作过程"></a>1.2.2 TCP工作过程</h5><ul>
-<li><p>简单介绍：传输控制协议（Transmission Control Protocol，TCP）是一种面向连接的、可靠的、基于字节流的运输层通信协议。<br> 面向连接：通信前要建立连接，通信后要拆除连接；<br> 可靠的：它会后续的数据包状态进行跟踪；<br> 字节流：以字节为最小单位的流服务；</p>
+<li><p>简单介绍：传输控制协议（Transmission Control Protocol，TCP）是一种面向连接的、可靠的、基于字节流的运输层通信协议。<br>面向连接：通信前要建立连接，通信后要拆除连接；<br>可靠的：它会后续的数据包状态进行跟踪；<br>字节流：以字节为最小单位的流服务；</p>
 </li>
 <li><p>TCP分三个阶段<br>第一阶段：连接建立（三次握手）<br>第二阶段：数据传输<br>第三阶段：连接拆除（四次握手）</p>
 </li>
@@ -376,7 +376,7 @@
 </li>
 <li><p>工作顺序： LCP（链路协商）、认证协商（可选）、NCP（网络层协商）</p>
 </li>
-<li><p> LCP报文格式：Flag、Address、Control、Protocol、Information、PCS、Flag</p>
+<li><p>LCP报文格式：Flag、Address、Control、Protocol、Information、PCS、Flag</p>
 </li>
 <li><p>NCP协商：常见使用IPCP协议（分为静态IP地址协商，动态IP地址协商）</p>
 </li>
@@ -429,7 +429,253 @@
 </ul>
 </li>
 </ul>
-<h3 id="三、-交换"><a href="#三、-交换" class="headerlink" title="三、 交换"></a>三、 交换</h3><h4 id="3-1-交换机"><a href="#3-1-交换机" class="headerlink" title="3.1 交换机"></a>3.1 交换机</h4><h5 id="3-1-1-基本工作原理：MAC地址表"><a href="#3-1-1-基本工作原理：MAC地址表" class="headerlink" title="3.1.1 基本工作原理：MAC地址表"></a>3.1.1 基本工作原理：MAC地址表</h5><h5 id="3-1-2-交换机接口类型"><a href="#3-1-2-交换机接口类型" class="headerlink" title="3.1.2 交换机接口类型"></a>3.1.2 交换机接口类型</h5><h4 id="3-2-VLAN"><a href="#3-2-VLAN" class="headerlink" title="3.2 VLAN"></a>3.2 VLAN</h4><h5 id="3-2-1-接口数据处理：Access、trunk、hybrid"><a href="#3-2-1-接口数据处理：Access、trunk、hybrid" class="headerlink" title="3.2.1 接口数据处理：Access、trunk、hybrid"></a>3.2.1 接口数据处理：Access、trunk、hybrid</h5><h4 id="3-3-STP"><a href="#3-3-STP" class="headerlink" title="3.3 STP"></a>3.3 STP</h4><h5 id="3-3-1-端口角色、状态转换"><a href="#3-3-1-端口角色、状态转换" class="headerlink" title="3.3.1 端口角色、状态转换"></a>3.3.1 端口角色、状态转换</h5><h5 id="3-3-2-根桥选举"><a href="#3-3-2-根桥选举" class="headerlink" title="3.3.2 根桥选举"></a>3.3.2 根桥选举</h5><h5 id="3-3-3-MSTP"><a href="#3-3-3-MSTP" class="headerlink" title="3.3.3 MSTP"></a>3.3.3 MSTP</h5><h3 id="四、网络优化"><a href="#四、网络优化" class="headerlink" title="四、网络优化"></a>四、网络优化</h3><h4 id="4-1-交换机端口：端口捆绑-链路聚合"><a href="#4-1-交换机端口：端口捆绑-链路聚合" class="headerlink" title="4.1 交换机端口：端口捆绑/链路聚合"></a>4.1 交换机端口：端口捆绑/链路聚合</h4><h4 id="4-2-VRRP"><a href="#4-2-VRRP" class="headerlink" title="4.2 VRRP"></a>4.2 VRRP</h4><h3 id="五、网络工程项目管理"><a href="#五、网络工程项目管理" class="headerlink" title="五、网络工程项目管理"></a>五、网络工程项目管理</h3><h4 id="5-1-网络设计"><a href="#5-1-网络设计" class="headerlink" title="5.1 网络设计"></a>5.1 网络设计</h4><h2 id="第二章、网络原理与协议分析"><a href="#第二章、网络原理与协议分析" class="headerlink" title="第二章、网络原理与协议分析"></a>第二章、网络原理与协议分析</h2><h3 id="一、-嗅探机制"><a href="#一、-嗅探机制" class="headerlink" title="一、 嗅探机制"></a>一、 嗅探机制</h3><h3 id="二、-Wireshark基本操作："><a href="#二、-Wireshark基本操作：" class="headerlink" title="二、 Wireshark基本操作："></a>二、 Wireshark基本操作：</h3><h4 id="2-1-过滤器-Examples：CaptureFilters-The-Wireshark-Wiki"><a href="#2-1-过滤器-Examples：CaptureFilters-The-Wireshark-Wiki" class="headerlink" title="2.1 过滤器 Examples：CaptureFilters - The Wireshark Wiki"></a>2.1 过滤器 Examples：<a target="_blank" rel="noopener" href="https://wiki.wireshark.org/CaptureFilters">CaptureFilters - The Wireshark Wiki</a></h4><h4 id="2-2-3-4-3过滤器案例"><a href="#2-2-3-4-3过滤器案例" class="headerlink" title="2.2 3.4.3过滤器案例"></a>2.2 3.4.3过滤器案例</h4><h3 id="三、ARP-RARP"><a href="#三、ARP-RARP" class="headerlink" title="三、ARP/RARP"></a>三、ARP/RARP</h3><h4 id="3-1-工作原理，报文格式"><a href="#3-1-工作原理，报文格式" class="headerlink" title="3.1 工作原理，报文格式"></a>3.1 工作原理，报文格式</h4><h4 id="3-2-免费ARP工作原理"><a href="#3-2-免费ARP工作原理" class="headerlink" title="3.2 免费ARP工作原理"></a>3.2 免费ARP工作原理</h4><h3 id="四、IP"><a href="#四、IP" class="headerlink" title="四、IP"></a>四、IP</h3><h4 id="4-1-报文格式"><a href="#4-1-报文格式" class="headerlink" title="4.1 报文格式"></a>4.1 报文格式</h4><h4 id="4-2-分片原理"><a href="#4-2-分片原理" class="headerlink" title="4.2 分片原理"></a>4.2 分片原理</h4><h3 id="五、ICMP"><a href="#五、ICMP" class="headerlink" title="五、ICMP"></a>五、ICMP</h3><h4 id="5-1-报文结构"><a href="#5-1-报文结构" class="headerlink" title="5.1 报文结构"></a>5.1 报文结构</h4><h4 id="5-2-echo-request-echo-response"><a href="#5-2-echo-request-echo-response" class="headerlink" title="5.2 echo request/echo response"></a>5.2 echo request/echo response</h4><h4 id="5-3-traceroute工作原理"><a href="#5-3-traceroute工作原理" class="headerlink" title="5.3 traceroute工作原理"></a>5.3 traceroute工作原理</h4><h3 id="六、-TCP"><a href="#六、-TCP" class="headerlink" title="六、 TCP"></a>六、 TCP</h3><h4 id="6-1-报文结构"><a href="#6-1-报文结构" class="headerlink" title="6.1 报文结构"></a>6.1 报文结构</h4><h4 id="6-2-三次握手原理"><a href="#6-2-三次握手原理" class="headerlink" title="6.2 三次握手原理"></a>6.2 三次握手原理</h4><h4 id="6-3-四次挥手原理"><a href="#6-3-四次挥手原理" class="headerlink" title="6.3 四次挥手原理"></a>6.3 四次挥手原理</h4><h4 id="6-4-窗口与window-scale"><a href="#6-4-窗口与window-scale" class="headerlink" title="6.4 窗口与window scale"></a>6.4 窗口与window scale</h4><h3 id="七、-DNS"><a href="#七、-DNS" class="headerlink" title="七、 DNS"></a>七、 DNS</h3><h4 id="7-1-常见记录类型"><a href="#7-1-常见记录类型" class="headerlink" title="7.1 常见记录类型"></a>7.1 常见记录类型</h4>
+<h3 id="三、-交换"><a href="#三、-交换" class="headerlink" title="三、 交换"></a>三、 交换</h3><h4 id="3-1-交换机"><a href="#3-1-交换机" class="headerlink" title="3.1 交换机"></a>3.1 交换机</h4><h5 id="3-1-1-基本工作原理：MAC地址表"><a href="#3-1-1-基本工作原理：MAC地址表" class="headerlink" title="3.1.1 基本工作原理：MAC地址表"></a>3.1.1 基本工作原理：MAC地址表</h5><ul>
+<li>工作位置：交换机工作在二层（数据链路层），也有三层交换机（具有路由功能的交换机）</li>
+<li>主要功能：<ul>
+<li>学习：以太网交换机了解每一端口相连设备的MAC地址，并将地址同相应的端口映射起来存放在交换机缓存中的MAC地址表中.</li>
+<li>转发/过滤：当一个数据帧的目的地址在MAC地址表中有映射时，它被转发到连接目的节点的端口而不是所有端口（如该数据帧为广播/组播帧则转发至所有端口)</li>
+<li>消除回路： 当交换机包括一个冗余回路时，以太网交换机通过生成树协议避免回路的产生，同时允许存在后备路径。</li>
+</ul>
+</li>
+</ul>
+<h5 id="3-1-2-交换机接口类型（链路类型）"><a href="#3-1-2-交换机接口类型（链路类型）" class="headerlink" title="3.1.2 交换机接口类型（链路类型）"></a>3.1.2 交换机接口类型（链路类型）</h5><ul>
+<li>Access：只属于一个VLAN，一般用于连接计算机端口。</li>
+<li>Trunk：允许多个vlan通过，可以接收和发送多个vlan的报文，一般用于交换机之间的端口。</li>
+<li>hybrid：允许多个vlan通过，可以接受和发送多个vlan的报文，可以用于交换机之间连接，也可以用于连接用户计算机。</li>
+</ul>
+<h4 id="3-2-VLAN"><a href="#3-2-VLAN" class="headerlink" title="3.2 VLAN"></a>3.2 VLAN</h4><ul>
+<li><a target="_blank" rel="noopener" href="http://www.023wg.com/message/message/cd_feature_eth_vlan.html">帧格式</a></li>
+</ul>
+<h5 id="3-2-1-接口数据处理：Access、trunk、hybrid"><a href="#3-2-1-接口数据处理：Access、trunk、hybrid" class="headerlink" title="3.2.1 接口数据处理：Access、trunk、hybrid"></a>3.2.1 接口数据处理：Access、trunk、hybrid</h5><ul>
+<li>Access：<ul>
+<li>收报文<ul>
+<li>有Vlan：丢弃</li>
+<li>无Vlan：打上端口的PVID，进行转发</li>
+</ul>
+</li>
+<li>发报文<ul>
+<li>将报文的Vlan信息剥离，再发送</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Trunk：<ul>
+<li>收报文：<ul>
+<li>有Vlan：判断该trunk端口是否允许该vlan的数据进入，若可以则转发，否则丢弃</li>
+<li>无Vlan：打上端口的PVID，进行转发</li>
+</ul>
+</li>
+<li>发报文：<ul>
+<li>比较端口的PVID和将要发送报文的vlan信息，若两者相等则剥离vlan信息，再发送，若不相等则直接发送</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>hybrid：<ul>
+<li>收报文：<ul>
+<li>有Vlan：判断该hybrid端口是否允许该vlan数据的进入，若可以则转发，否则丢弃（此时端口上的untag配置是不用考虑的，untag配置只对发送报文时起作用）</li>
+<li>无Vlan：打上端口的PVID，进行转发</li>
+</ul>
+</li>
+<li>发报文：<ul>
+<li>untag：剥离vlan信息，再发送</li>
+<li>tag：直接发送</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-3-STP"><a href="#3-3-STP" class="headerlink" title="3.3 STP"></a>3.3 STP</h4><ul>
+<li><p>简述：生成树协议，作用是防止网桥网络中的冗余链路形成环路工作。</p>
+</li>
+<li><p>生成树算法过程：</p>
+<ul>
+<li>选择根网桥<ul>
+<li>选取依据：<ul>
+<li>网桥ID=网桥优先级+网桥MAC地址</li>
+<li>网桥ID小的优先，优先级相同时，比较MAC地址</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>选择根端口（每个非根网桥都要选举一个）<ul>
+<li>选取依据：<ul>
+<li>到跟网桥路径开销最低</li>
+<li>最低的发送方网桥ID</li>
+<li>最低的端口ID</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>选择指定端口（每条链路需要选举一个）<ul>
+<li>根桥上的所有端口都是指定端口</li>
+<li>选取依据：<ul>
+<li>根路径开销较低</li>
+<li>所在的交换机网桥ID值最小</li>
+<li>端口号最小</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>阻塞非跟端口、非指定端口</li>
+</ul>
+</li>
+<li><p>开销</p>
+<ul>
+<li>链路速度：10Gbps            开销：2</li>
+<li>链路速度：1Gbps              开销：4</li>
+<li>链路速度：100Mbps        开销：19</li>
+<li>链路速度：10Mbps           开销：100</li>
+</ul>
+</li>
+<li><p>端口状态</p>
+<ul>
+<li>Blocking（阻塞状态）：此时，二层端口为非指定端口，也不会参与数据帧的转发。该端口通过接收BPDU来判断根交换机的位置和根ID，以及在STP拓扑收敛结束之后，各交换机端口应该处于什么状态，在默认情况下，端口会在这种状态下停留20秒钟时间。</li>
+<li>Listening（侦听状态）：生成树此时已经根据交换机所接收到的BPDU而判断出了这个端口应该参与数据帧的转发。于是交换机端口就将不再满足于接收BPDU，而同时也开始发送自己的BPDU，并以此通告邻接的交换机该端口会在活动拓扑中参与转发数据帧的工作。在默认情况下，该端口会在这种状态下停留15秒钟的时间。</li>
+<li>Learning(学习状态)：这个二层端口准备参与数据帧的转发，并开始填写MAC表。在默认情况下，端口会在这种状态下停留15秒钟时间。</li>
+<li>Forwarding（转发状态）：这个二层端口已经成为了活动拓扑的一个组成部分，它会转发数据帧，并同时收发BPDU。</li>
+<li>Disabled（禁用状态）：这个二层端口不会参与生成树，也不会转发数据帧。</li>
+</ul>
+</li>
+<li><table>
+<thead>
+<tr>
+<th>状态</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>禁用</td>
+<td align="center">不收发任何报文</td>
+</tr>
+<tr>
+<td>阻塞</td>
+<td align="center">不接收或转发数据，接收但不发送BPDU，不进行地址学习</td>
+</tr>
+<tr>
+<td>监听</td>
+<td align="center">不接收或转发数据，接收并发送BPDU，不进行地址学习</td>
+</tr>
+<tr>
+<td>学习</td>
+<td align="center">不接收或转发数据，接收并发送BPDU，开始地址学习</td>
+</tr>
+<tr>
+<td>转发</td>
+<td align="center">接收或转发数据，接收并发送BPDU，开始地址学习</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>BPDU：运行STP的交换机之间交换的消息帧。BPDU内包含了STP所需的路径和优先级信息，STP便利用这些信息来确定根桥以及到根桥的路径。</p>
+</li>
+</ul>
+<h5 id="3-3-1-端口角色、状态转换"><a href="#3-3-1-端口角色、状态转换" class="headerlink" title="3.3.1 端口角色、状态转换"></a>3.3.1 端口角色、状态转换</h5><ul>
+<li>禁用端口<ul>
+<li>位置：存在于非根网桥和根网桥上</li>
+<li>解释：生成树中不起作用的端口</li>
+</ul>
+</li>
+<li>根端口<ul>
+<li>位置：存在于非根网桥上</li>
+<li>解释：非根交换机上距离根交换机最近的端口，根端口会将数据传送给根桥用于传输，是交换机端口去往跟桥的最佳路径。</li>
+</ul>
+</li>
+<li>指定端口<ul>
+<li>位置：存在于非根网桥和根网桥上</li>
+<li>解释：对于根网桥来说，所有端口都为指定端口；对于非根网桥来说，指定端口根据需要与根交换机之间收发数据。</li>
+</ul>
+</li>
+<li>替代端口<ul>
+<li>位置：存在于非根网桥上</li>
+<li>解释：用来提供替代去往根网桥路径的端口，即替换当前根端口，工作在稳定拓扑中为丢弃状态。</li>
+</ul>
+</li>
+<li>备份端口<ul>
+<li>位置：存在于非根网桥上</li>
+<li>解释：充当指定交换机的那个网段提供一条备份链路，工作在稳定拓扑中为丢弃状态。</li>
+</ul>
+</li>
+</ul>
+<h5 id="3-3-2-根桥选举"><a href="#3-3-2-根桥选举" class="headerlink" title="3.3.2 根桥选举"></a>3.3.2 根桥选举</h5><p>见上生成树算法过程</p>
+<h5 id="3-3-2-MSTP"><a href="#3-3-2-MSTP" class="headerlink" title="3.3.2 MSTP"></a>3.3.2 MSTP</h5><h3 id="四、网络优化"><a href="#四、网络优化" class="headerlink" title="四、网络优化"></a>四、网络优化</h3><h4 id="4-1-交换机端口：端口捆绑-链路聚合"><a href="#4-1-交换机端口：端口捆绑-链路聚合" class="headerlink" title="4.1 交换机端口：端口捆绑/链路聚合"></a>4.1 交换机端口：端口捆绑/链路聚合</h4><h4 id="4-2-VRRP"><a href="#4-2-VRRP" class="headerlink" title="4.2 VRRP"></a>4.2 VRRP</h4><h3 id="五、网络工程项目管理"><a href="#五、网络工程项目管理" class="headerlink" title="五、网络工程项目管理"></a>五、网络工程项目管理</h3><h4 id="5-1-网络设计"><a href="#5-1-网络设计" class="headerlink" title="5.1 网络设计"></a>5.1 网络设计</h4><h2 id="第二章、网络原理与协议分析"><a href="#第二章、网络原理与协议分析" class="headerlink" title="第二章、网络原理与协议分析"></a>第二章、网络原理与协议分析</h2><h3 id="一、-嗅探机制"><a href="#一、-嗅探机制" class="headerlink" title="一、 嗅探机制"></a>一、 嗅探机制</h3><h3 id="二、-Wireshark基本操作："><a href="#二、-Wireshark基本操作：" class="headerlink" title="二、 Wireshark基本操作："></a>二、 Wireshark基本操作：</h3><h4 id="2-1-过滤器-Examples：CaptureFilters-The-Wireshark-Wiki"><a href="#2-1-过滤器-Examples：CaptureFilters-The-Wireshark-Wiki" class="headerlink" title="2.1 过滤器 Examples：CaptureFilters - The Wireshark Wiki"></a>2.1 过滤器 Examples：<a target="_blank" rel="noopener" href="https://wiki.wireshark.org/CaptureFilters">CaptureFilters - The Wireshark Wiki</a></h4><h4 id="2-2-3-4-3过滤器案例"><a href="#2-2-3-4-3过滤器案例" class="headerlink" title="2.2 3.4.3过滤器案例"></a>2.2 3.4.3过滤器案例</h4><h3 id="三、ARP-RARP"><a href="#三、ARP-RARP" class="headerlink" title="三、ARP/RARP"></a>三、ARP/RARP</h3><h4 id="3-1-工作原理，报文格式"><a href="#3-1-工作原理，报文格式" class="headerlink" title="3.1 工作原理，报文格式"></a>3.1 工作原理，报文格式</h4><h4 id="3-2-免费ARP工作原理"><a href="#3-2-免费ARP工作原理" class="headerlink" title="3.2 免费ARP工作原理"></a>3.2 免费ARP工作原理</h4><h3 id="四、IP"><a href="#四、IP" class="headerlink" title="四、IP"></a>四、IP</h3><h4 id="4-1-报文格式"><a href="#4-1-报文格式" class="headerlink" title="4.1 报文格式"></a>4.1 报文格式</h4><h4 id="4-2-分片原理"><a href="#4-2-分片原理" class="headerlink" title="4.2 分片原理"></a>4.2 分片原理</h4><h3 id="五、ICMP"><a href="#五、ICMP" class="headerlink" title="五、ICMP"></a>五、ICMP</h3><h4 id="5-1-报文结构"><a href="#5-1-报文结构" class="headerlink" title="5.1 报文结构"></a>5.1 报文结构</h4><h4 id="5-2-echo-request-echo-response"><a href="#5-2-echo-request-echo-response" class="headerlink" title="5.2 echo request/echo response"></a>5.2 echo request/echo response</h4><h4 id="5-3-traceroute工作原理"><a href="#5-3-traceroute工作原理" class="headerlink" title="5.3 traceroute工作原理"></a>5.3 traceroute工作原理</h4><h3 id="六、-TCP"><a href="#六、-TCP" class="headerlink" title="六、 TCP"></a>六、 TCP</h3><h4 id="6-1-报文结构"><a href="#6-1-报文结构" class="headerlink" title="6.1 报文结构"></a>6.1 报文结构</h4><h4 id="6-2-三次握手原理"><a href="#6-2-三次握手原理" class="headerlink" title="6.2 三次握手原理"></a>6.2 三次握手原理</h4><h4 id="6-3-四次挥手原理"><a href="#6-3-四次挥手原理" class="headerlink" title="6.3 四次挥手原理"></a>6.3 四次挥手原理</h4><h4 id="6-4-窗口与window-scale"><a href="#6-4-窗口与window-scale" class="headerlink" title="6.4 窗口与window scale"></a>6.4 窗口与window scale</h4><h3 id="七、-DNS"><a href="#七、-DNS" class="headerlink" title="七、 DNS"></a>七、 DNS</h3><h4 id="7-1-常见记录类型"><a href="#7-1-常见记录类型" class="headerlink" title="7.1 常见记录类型"></a>7.1 常见记录类型</h4><h2 id="第三章、-渗透测试"><a href="#第三章、-渗透测试" class="headerlink" title="第三章、 渗透测试"></a>第三章、 渗透测试</h2><h3 id="一、-PETS流程及工作内容"><a href="#一、-PETS流程及工作内容" class="headerlink" title="一、 PETS流程及工作内容"></a>一、 PETS流程及工作内容</h3><h3 id="二、-网安关键词"><a href="#二、-网安关键词" class="headerlink" title="二、 网安关键词"></a>二、 网安关键词</h3><ul>
+<li><p>肉鸡：肉鸡指的就是被黑客成功入侵并取得控制权限的电脑。黑客们可以随意的控制肉鸡，就像在使用自己的电脑一样，很形象的比喻，就像是养的肉鸡，任黑客宰杀和利用。关键的是，在成为肉鸡后，只要黑客不对电脑进行破坏，使用者很难发现，有可能就是被养在哪里，随时都可能被用。</p>
+</li>
+<li><p>后门：从字面意思就可以理解，前门有锁进不去，从后门悄悄潜入。这里指的是可以绕过安全软件等的防护，从一条比较隐蔽的通道获取对电脑的控制权限的通道，就叫做后门。黑客在入侵一台电脑成功后，很可能会再留下一个后门，将其发展成为肉鸡。</p>
+</li>
+<li><p>Shell：Shell指的是一种命令执行环境，比如，Windows下的cmd就是其Shell执行环境</p>
+</li>
+<li><p>WebShell：WebShell就是以.asp、.php、.jsp或者.cgi等网页文件形式存在的一种命令执行环境，也可以将其称作是一种网页后门。</p>
+</li>
+<li><p>弱口令：这个相比都很熟悉了，注册账号的时候，我们输入123456，abcd等，网站就会在后面显示密码等级弱。这种非常简单的密码就叫做弱口令，弱口令通常很容易被黑客破解，用最低端的暴力算号器都能试出来。</p>
+</li>
+<li><p>扫描：黑客会用一些工具来进行扫描，但用途则稍有不同，大多扫描的是IP、端口、漏洞等一切有利于入侵的信息。大概原理就是通过向目标计算机发送一些特定的请求，根据返回的信息来获取信息。</p>
+</li>
+<li><p>嗅探：嗅探指的是对局域网中流经的数据包进行截取及分析，从中获取有效信息，早期用HUB组建的局域网中属共享原理，数据是通过MAC地址来分辨目的地的，改变网卡为混杂模式，则就可以接受并分析数据包了。而现在大多用交换机组建局域网，交换机原理高级，数据直接发送至目标主机的网卡端口，所以大多采用ARP欺骗，修改MAC地址欺骗等方式来嗅探。</p>
+</li>
+<li><p>木马：木马指的是伪装成正常程序的的程序，它可以捆绑在任何正常的软件中，看起来让你感兴趣去打开，当运行后回在你的电脑上安装客户端或者执行特定的任务。之后黑客就能轻松地利用正在运行的木马程序来取得你的电脑控制权。</p>
+</li>
+<li><p>网页木马：网页木马指表面上伪装成普通的网页文件或是将恶意的代码直接插入到正常的网页文件中，当有人访问时，网页木马就会利用对方系统或者浏览器的漏洞自动将配置好木马的服务端下载到访问者的计算机上来自动执行。</p>
+</li>
+<li><p>挂马：挂马指在他人的网站文件中放入网页木马或是将代码潜入到对方正常的网页文件里，以使浏览者中马。</p>
+</li>
+<li><p>病毒：病毒大家都不陌生，指的就是具有破坏性的程序或者代码，电脑只要感染病毒后，即刻就会收到相应的破坏，病毒具有传染性、可不断复制，直接对电脑系统或者文件造成损坏。木马实际上也可以算病毒的一种。</p>
+</li>
+<li><p>蠕虫：蠕虫是指能自我复制和广泛传播，以占用系统和网络资源为主要目的的恶意程<br>序。按照传播途径，蠕虫可进一步分为邮件蠕虫、即时消息蠕虫、U盘蠕虫、漏洞<br>利用蠕虫和其他蠕虫5类。</p>
+</li>
+<li><p>加壳：加壳指给捆绑了木马的程序传一层马甲，进行压缩及代码加密，使得杀毒软件无法真实辨别出其恶意属性，特意绕过安全软件进入到电脑已达到目的。加壳也用于开发者对软件代码的保护等。脱壳指加壳的反向操作——去掉程序的壳。</p>
+</li>
+<li><p>花指令：花指令是指几句汇编指令，让汇编语句进行一些跳转，使得杀毒软件不能正常地判断病毒文件的构造。通俗地说，就是杀毒软件是从头到脚按顺序来查找病毒，如果把病毒的头和脚颠倒位置，杀毒软件就找不到病毒了。</p>
+</li>
+<li><p>免杀：免杀是指通过加壳、加密、修改特征码、加花指令等技术来修改程序，使其逃过杀毒软件的查杀。</p>
+</li>
+<li><p>漏洞：人人都知道，又是一个很形象的比喻，漏指一个系统或软件存在的弱点或缺陷，来自应用设计时的缺陷或编码时产生的错误，而这些错误则会被黑客利用。现在我们使用的系统及软件，经常都会更新补丁及程序，目的就是为了修复发现的漏洞增加相应的防护及功能，确保更加安全。</p>
+</li>
+<li><p>溢出：确切地讲，溢出应该是”缓冲区溢出”。简单的解释就是程序对接收的输入数据没有执行有效的检测而导致错误，后果可能是造成程序崩溃或者是执行攻击者的命令。溢出大致可以分为两类：堆溢出和栈溢出。</p>
+</li>
+<li><p>注入：由于程序员的水平参差不齐，相当大一部分应用程序存在安全隐患，用户可以提交一段数据库查询代码，根据程序返回的结果获得某些想要的数据，这就是SQL注入。</p>
+</li>
+<li><p>注入点：注入点是可以实行注入的地方，通常是一个访问数据库的连接。根据注入点数据库运行账号的权限的不同，所得到的权限也不同。</p>
+</li>
+<li><p>内网：通俗地讲，内网就是局域网。比如网吧、校园网、公司内部网等都属于此类。如果计算机的IP地址在以下三个范围之内，就说明该计算机是处于内网之中的：</p>
+<ul>
+<li>10.0.0.0~10.255.255.255</li>
+<li>172.16.0.0~172.31.255.255</li>
+<li>192.168.0.0~192.168.255.255</li>
+</ul>
+</li>
+<li><p>外网：外网是相对于内网而言，其中的计算机直接连入互联网，从而与互联网上的任意一台计算机互相访问。</p>
+</li>
+<li><p>勒索软件：勒索软件是黑客用来劫持用户资产或资源并以此为条件向用户勒索钱财的一种 恶意软件。勒索软件通常会将用户数据或用户设备进行加密操作或更改配置，使之 不可用，然后向用户发出勒索通知，要求用户支付费用以获得解密密码或者获得恢 复系统正常运行的方法。</p>
+</li>
+<li><p>拒绝服务攻击：拒绝服务攻击是向某一目标信息系统发送密集的攻击包，或执行特定攻击操 作，以期致使目标系统停止提供服务。</p>
+</li>
+<li><p>域名劫持：域名劫持是通过拦截域名解析请求或篡改域名服务器上的数据，使得用户在访 问相关域名时返回虚假IP地址或使用户的请求失败。</p>
+</li>
+<li><p>路由劫持：路由劫持是通过欺骗方式更改路由信息，导致用户无法访问正确的目标，或导 致用户的访问流量绕行黑客设定的路径，达到不正当的目的。</p>
+</li>
+<li><p>网页篡改：网页篡改是恶意破坏或更改网页内容，使网站无法正常工作或出现黑客插入的 非正常网页内容。</p>
+</li>
+<li><p>网站后门：网站后门事件是指黑客在网站的特定目录中上传远程控制页面，从而能够通过 该页面秘密远程控制网站服务器的攻击形式。</p>
+</li>
+</ul>
+<h3 id="三、-主动信息收集"><a href="#三、-主动信息收集" class="headerlink" title="三、 主动信息收集"></a>三、 主动信息收集</h3><h4 id="3-1-二层发现：arping、netdiscover"><a href="#3-1-二层发现：arping、netdiscover" class="headerlink" title="3.1 二层发现：arping、netdiscover"></a>3.1 二层发现：arping、netdiscover</h4><ul>
+<li>arping：Arping 是一个 ARP 级别的 ping 工具，可用来直接 ping MAC 地址，以及找出那些 ip 地址被哪些电脑所使用了。</li>
+<li>netdiscover：和arping差不多</li>
+</ul>
+<h4 id="3-2-三层发现：fping、hping、nping"><a href="#3-2-三层发现：fping、hping、nping" class="headerlink" title="3.2 三层发现：fping、hping、nping"></a>3.2 三层发现：fping、hping、nping</h4><ul>
+<li>fping：Fping程序类似于ping（ping是通过ICMP（网络控制信息协议InternetControl Message Protocol）协议回复请求以检测主机是否存在）。Fping与ping不同的地方在于，fping可以在命令行中指定要ping的主机数量范围，也可以指定含有要ping的主机列表文件。</li>
+<li>hping：典型ping程序使用的是ICMP回显请求来测试，而HPING可以使用任何IP报文，包括ICMP、TCP、UDP、RAWSOCKET。</li>
+<li>nping：Nping 是一个用于网络数据包生成、响应分析和响应时间测量的开源工具。Nping 可以为各种协议生成网络数据包，允许用户完全控制协议头。虽然 Nping 可以用作简单ping来检测活动主机的实用程序，但它也可以用作网络堆栈压力测试、ARP中毒、拒绝服务攻击、路由跟踪和其他目的的原始数据包生成器。</li>
+</ul>
+<h4 id="3-3-四层发现："><a href="#3-3-四层发现：" class="headerlink" title="3.3 四层发现："></a>3.3 四层发现：</h4><h5 id="3-3-1-TCP、UDP发现原理"><a href="#3-3-1-TCP、UDP发现原理" class="headerlink" title="3.3.1 TCP、UDP发现原理"></a>3.3.1 TCP、UDP发现原理</h5><h5 id="3-3-2-隐蔽扫描"><a href="#3-3-2-隐蔽扫描" class="headerlink" title="3.3.2 隐蔽扫描"></a>3.3.2 隐蔽扫描</h5><h5 id="3-3-3-僵尸扫描"><a href="#3-3-3-僵尸扫描" class="headerlink" title="3.3.3 僵尸扫描"></a>3.3.3 僵尸扫描</h5><h4 id="3-4-服务扫描"><a href="#3-4-服务扫描" class="headerlink" title="3.4 服务扫描"></a>3.4 服务扫描</h4><h5 id="3-4-1-OS系统识别原理"><a href="#3-4-1-OS系统识别原理" class="headerlink" title="3.4.1 OS系统识别原理"></a>3.4.1 OS系统识别原理</h5><h5 id="3-4-2-SMB扫描技术"><a href="#3-4-2-SMB扫描技术" class="headerlink" title="3.4.2 SMB扫描技术"></a>3.4.2 SMB扫描技术</h5><h4 id="3-5-nmap基本应用"><a href="#3-5-nmap基本应用" class="headerlink" title="3.5 nmap基本应用"></a>3.5 nmap基本应用</h4><h4 id="3-6-漏洞扫描"><a href="#3-6-漏洞扫描" class="headerlink" title="3.6 漏洞扫描"></a>3.6 漏洞扫描</h4><h5 id="3-6-1-关键词：CVSS、CVE、CNNVD、NVD"><a href="#3-6-1-关键词：CVSS、CVE、CNNVD、NVD" class="headerlink" title="3.6.1 关键词：CVSS、CVE、CNNVD、NVD"></a>3.6.1 关键词：CVSS、CVE、CNNVD、NVD</h5><h5 id="3-6-2-漏洞检索"><a href="#3-6-2-漏洞检索" class="headerlink" title="3.6.2 漏洞检索"></a>3.6.2 漏洞检索</h5><ul>
+<li><p>kali漏洞数据库利用</p>
+</li>
+<li><p>MSF插件漏扫：wmap</p>
+</li>
+<li><p>nmap nse脚本库和漏扫命令</p>
+</li>
+</ul>
+<h4 id="3-7-漏洞分析与利用"><a href="#3-7-漏洞分析与利用" class="headerlink" title="3.7 漏洞分析与利用"></a>3.7 漏洞分析与利用</h4><h5 id="3-7-1-辅助模块基本使用"><a href="#3-7-1-辅助模块基本使用" class="headerlink" title="3.7.1 辅助模块基本使用"></a>3.7.1 辅助模块基本使用</h5><h5 id="3-7-2-Exploit模块基本应用"><a href="#3-7-2-Exploit模块基本应用" class="headerlink" title="3.7.2 Exploit模块基本应用"></a>3.7.2 Exploit模块基本应用</h5>
     </div>
   </div>
   
@@ -528,12 +774,6 @@
 
 
   <nav class="post-navigation">
-    
-      <div class="nav-pre">
-        <i class="iconfont icon-prev"></i>
-        上一篇:
-        <a href="/2022/01/12/%E4%B8%80%E3%80%81%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/" target="_self">1.网络复习</a>
-      </div>
     
     
   </nav>
