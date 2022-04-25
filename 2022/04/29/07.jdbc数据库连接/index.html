@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com" />
+  
+  
+  
+  <title>07.jdbc数据库连接 | Xuqihan</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JDBC,JDBC," />
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="xuqihan_BK">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  
+<script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">Xuqihan.com</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a 
+              href="/"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_blank"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_blank"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_blank"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a 
+              href="/friends/"
+              target="_blank"
+            >
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_blank"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="">
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a 
+                    href="https://github.com/xuqihan" 
+                    target="_blank"
+                  >
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a 
+                    href="https://www.zhihu.com/people/godbmw/activities" 
+                    target="_blank"
+                  >
+                    微博
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>07.jdbc数据库连接</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2022-04-29
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/JDBC/">
+            JDBC
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="07.jdbc数据库连接"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>安装相应的驱动程序后，现在是时候来学习使用JDBC建立数据库连接了。</p>
+<p>建立JDBC连接所涉及的编程相当简单。 以下是基本的四个步骤 -</p>
+<ul>
+<li><strong>导入JDBC包</strong>：使用Java语言的<code>import</code>语句在Java代码开头位置导入所需的类。</li>
+<li><strong>注册JDBC驱动程序</strong>：使JVM将所需的驱动程序实现加载到内存中，从而可以满足JDBC请求。</li>
+<li><strong>数据库URL配置</strong>：创建一个正确格式化的地址，指向要连接到的数据库(如：MySQL,Oracle和MSSQL等等)。</li>
+<li><strong>创建连接对象</strong>：最后，调用<code>DriverManager</code>对象的<code>getConnection()</code>方法来建立实际的数据库连接。</li>
+</ul>
+<h2 id="1-导入JDBC包"><a href="#1-导入JDBC包" class="headerlink" title="1. 导入JDBC包"></a>1. 导入JDBC包</h2><p><code>import</code>语句告诉Java编译器在哪里找到在代码中引用的类，<code>import</code>语句一般放置在源代码的开头。<br>要使用标准的JDBC包，它允许在数据库表中执行选择，插入，更新和删除数据，请将以下导入添加到源代码中 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.sql.* ;  <span class="comment">// for standard JDBC programs</span></span><br><span class="line"><span class="keyword">import</span> java.math.* ; <span class="comment">// for BigDecimal and BigInteger support</span></span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-注册JDBC驱动程序"><a href="#2-注册JDBC驱动程序" class="headerlink" title="2. 注册JDBC驱动程序"></a>2. 注册JDBC驱动程序</h2><p>在使用程序之前，必须先注册该驱动程序。 注册驱动程序是将Oracle驱动程序的类文件加载到内存中的过程，因此可以将其用作JDBC接口的实现。</p>
+<p>只需在程序中一次注册就可以。可以通过两种方式之一来注册驱动程序。</p>
+<h3 id="2-1-方法I-Class-forName"><a href="#2-1-方法I-Class-forName" class="headerlink" title="2.1 方法I - Class.forName()"></a>2.1 方法I - Class.forName()</h3><p>注册驱动程序最常见的方法是使用Java的<code>Class.forName()</code>方法，将驱动程序的类文件动态加载到内存中，并将其自动注册。这个方法是推荐使用的方法，因为它使驱动程序注册可配置和便携。</p>
+<p>以下示例使用<code>Class.forName()</code>注册Oracle驱动程序 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   Class.forName(<span class="string">&quot;oracle.jdbc.driver.OracleDriver&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(ClassNotFoundException ex) &#123;</span><br><span class="line">   System.out.println(<span class="string">&quot;Error: unable to load driver class!&quot;</span>);</span><br><span class="line">   System.exit(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>使用JDBC驱动程序连接MySQL数据库的示例代码片段 - </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class.forName(<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>);</span><br><span class="line">Connection conn = <span class="keyword">null</span>;</span><br><span class="line">conn = DriverManager.getConnection(<span class="string">&quot;jdbc:mysql://hostname:port/db_name&quot;</span>,<span class="string">&quot;db_username&quot;</span>, <span class="string">&quot;db_password&quot;</span>);</span><br><span class="line">conn.close();</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>getInstance()</code>方法来解决不合规的JVM，但是必须编写两个额外的异常，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   Class.forName(<span class="string">&quot;oracle.jdbc.driver.OracleDriver&quot;</span>).newInstance();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(ClassNotFoundException ex) &#123;</span><br><span class="line">   System.out.println(<span class="string">&quot;Error: unable to load driver class!&quot;</span>);</span><br><span class="line">   System.exit(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">catch</span>(IllegalAccessException ex) &#123;</span><br><span class="line">   System.out.println(<span class="string">&quot;Error: access problem while loading!&quot;</span>);</span><br><span class="line">   System.exit(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">catch</span>(InstantiationException ex) &#123;</span><br><span class="line">   System.out.println(<span class="string">&quot;Error: unable to instantiate driver!&quot;</span>);</span><br><span class="line">   System.exit(<span class="number">3</span>);</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-方法II-DriverManager-registerDriver"><a href="#2-2-方法II-DriverManager-registerDriver" class="headerlink" title="2.2 方法II - DriverManager.registerDriver()"></a>2.2 方法II - DriverManager.registerDriver()</h3><p>第二种方法是使用静态<code>DriverManager.registerDriver()</code>方法来注册驱动程序。</p>
+<p>如果使用的是非JDK兼容的JVM(如Microsoft提供的)，则应使用<code>registerDriver()</code>方法。</p>
+<p>以下示例使用<code>registerDriver()</code>注册Oracle驱动程序 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   Driver myDriver = <span class="keyword">new</span> oracle.jdbc.driver.OracleDriver();</span><br><span class="line">   DriverManager.registerDriver( myDriver );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(ClassNotFoundException ex) &#123;</span><br><span class="line">   System.out.println(<span class="string">&quot;Error: unable to load driver class!&quot;</span>);</span><br><span class="line">   System.exit(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据库URL配置"><a href="#数据库URL配置" class="headerlink" title="数据库URL配置"></a>数据库URL配置</h2><p>加载驱动程序后，可以使用<code>DriverManager.getConnection()</code>方法建立连接。 为了方便参考，这里列出三个重载的<code>DriverManager.getConnection()</code>方法 -</p>
+<ul>
+<li><code>getConnection(String url)</code></li>
+<li><code>getConnection(String url, Properties prop)</code></li>
+<li><code>getConnection(String url, String user, String password)</code></li>
+</ul>
+<p>这里每个格式都需要一个数据库URL。 数据库URL是指向数据库的地址。</p>
+<p>制定数据库URL是建立连接相关联的大多数错误问题发生的地方。</p>
+<p>下表列出了常用的JDBC驱动程序名称和数据库URL。</p>
+<table>
+<thead>
+<tr>
+<th>RDBMS</th>
+<th>JDBC驱动程序名称</th>
+<th>URL格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MySQL</td>
+<td><code>com.mysql.jdbc.Driver</code></td>
+<td><code>jdbc:mysql://hostname/databaseName</code></td>
+</tr>
+<tr>
+<td>ORACLE</td>
+<td><code>oracle.jdbc.driver.OracleDriver</code></td>
+<td><code>jdbc:oracle:thin:@hostname:portNumber:databaseName</code></td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td><code>org.postgresql.Driver</code></td>
+<td><code>jdbc:postgresql://hostname:port/dbname</code></td>
+</tr>
+<tr>
+<td>DB2</td>
+<td><code>com.ibm.db2.jdbc.net.DB2Driver</code></td>
+<td><code>jdbc:db2:hostname:port Number/databaseName</code></td>
+</tr>
+<tr>
+<td>Sybase</td>
+<td><code>com.sybase.jdbc.SybDriver</code></td>
+<td><code>jdbc:sybase:Tds:hostname: portNumber/databaseName</code></td>
+</tr>
+</tbody></table>
+<p>URL格式的所有突出部分都是静态的，只需要根据数据库设置更改对应的部分。</p>
+<h2 id="创建连接对象"><a href="#创建连接对象" class="headerlink" title="创建连接对象"></a>创建连接对象</h2><p>上面列出了三种形式的<code>DriverManager.getConnection()</code>方法来创建一个连接对象。</p>
+<h2 id="使用具有用户名和密码的数据库URL"><a href="#使用具有用户名和密码的数据库URL" class="headerlink" title="使用具有用户名和密码的数据库URL"></a>使用具有用户名和密码的数据库URL</h2><p><code>getConnection()</code>最常用的形式要求传递数据库URL，用户名和密码：</p>
+<p>假设使用Oracle thin驱动程序，那么需要为URL的数据库部分指定：<code>host:port:databaseName</code>值。</p>
+<p>如果主机名为<strong>amrood</strong>的TCP/IP地址为<em>192.0.0.10</em>，并且Oracle侦听器配置为侦听端口<code>1521</code>，并且要连接的数据库名称是<code>EMP</code>，则完整的数据库URL将是 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jdbc:oracle:thin:<span class="meta">@amrood</span>:<span class="number">1521</span>:EMP</span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line">jdbc:oracle:thin:@<span class="number">192.0</span><span class="number">.0</span><span class="number">.10</span>:<span class="number">1521</span>:EMP</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>现在必须使用适当的用户名和密码调用<code>getConnection()</code>方法获取一个<code>Connection</code>对象，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String URL = <span class="string">&quot;jdbc:oracle:thin:@amrood:1521:EMP&quot;</span>;</span><br><span class="line"><span class="comment">// String URL = &quot;jdbc:oracle:thin:@192.0.0.10:1521:EMP&quot;;</span></span><br><span class="line">String USER = <span class="string">&quot;username&quot;</span>;</span><br><span class="line">String PASS = <span class="string">&quot;password&quot;</span></span><br><span class="line">Connection conn = DriverManager.getConnection(URL, USER, PASS);</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<h3 id="仅使用数据库URL"><a href="#仅使用数据库URL" class="headerlink" title="仅使用数据库URL"></a>仅使用数据库URL</h3><p><code>DriverManager.getConnection()</code>方法的第二种形式只需要数据库URL -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DriverManager.getConnection(String url);</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>但是，在本示例中，数据库URL包括用户名和密码，并具有以下一般形式 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jdbc:oracle:driver:username/password<span class="meta">@database</span></span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>所以，上述连接可以使用如下方式创建 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String URL = <span class="string">&quot;jdbc:oracle:thin:username/password@192.168.0.10:1521:EMP&quot;</span>;</span><br><span class="line">Connection conn = DriverManager.getConnection(URL);</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用数据库URL和Properties对象"><a href="#使用数据库URL和Properties对象" class="headerlink" title="使用数据库URL和Properties对象"></a>使用数据库URL和Properties对象</h3><p><code>DriverManager.getConnection()</code>方法的第三种形式需要一个数据库URL和一个<code>Properties</code>对象 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DriverManager.getConnection(String url, Properties info);</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p><code>Properties</code>对象包含一组键-值对。 在调用<code>getConnection()</code>方法时，它用于将驱动程序属性传递给驱动程序。</p>
+<p>要进行与上述示例相同的连接，请使用以下代码 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line">String URL = <span class="string">&quot;jdbc:oracle:thin:@amrood:1521:EMP&quot;</span>;</span><br><span class="line">Properties info = <span class="keyword">new</span> Properties( );</span><br><span class="line">info.put( <span class="string">&quot;user&quot;</span>, <span class="string">&quot;root&quot;</span> );</span><br><span class="line">info.put( <span class="string">&quot;password&quot;</span>, <span class="string">&quot;password12321&quot;</span> );</span><br><span class="line"></span><br><span class="line">Connection conn = DriverManager.getConnection(URL, info);</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<h2 id="关闭JDBC连接"><a href="#关闭JDBC连接" class="headerlink" title="关闭JDBC连接"></a>关闭JDBC连接</h2><p>在JDBC程序结束之后，显式地需要关闭与数据库的所有连接以结束每个数据库会话。 但是，如果在编写程序中忘记了关闭也没有关系，Java的垃圾收集器将在清除过时的对象时也会关闭这些连接。</p>
+<p>依靠垃圾收集，特别是数据库编程，是一个非常差的编程实践。所以应该要使用与连接对象关联的<code>close()</code>方法关闭连接。</p>
+<p>要确保连接已关闭，可以将关闭连接的代码中编写在“<code>finally</code>”块中。 一个<code>finally</code>块总是会被执行，不管是否发生异常。</p>
+<p>要关闭上面打开的连接，应该调用<code>close()</code>方法如下 -</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conn.close();</span><br><span class="line"><span class="keyword">SQL</span></span><br></pre></td></tr></table></figure>
+
+<p>显式关闭连接可节省数据库系统的资源。为了更好的理解，建议您学习的<a target="_blank" rel="noopener" href="http://www.yiibai.com/jdbc/jdbc-sample-code.html">JDBC示例代码教程</a>。</p>
+<p>参考Oracle+JDBC示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yiibai;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OracleJDBCExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] argv)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;-------- Oracle JDBC Connection Testing ------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">            Class.forName(<span class="string">&quot;oracle.jdbc.driver.OracleDriver&quot;</span>);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">&quot;Where is your Oracle JDBC Driver?&quot;</span>);</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;Oracle JDBC Driver Registered!&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Connection connection = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">            connection = DriverManager.getConnection(</span><br><span class="line">                    <span class="string">&quot;jdbc:oracle:thin:@localhost:1521:xe&quot;</span>, <span class="string">&quot;system&quot;</span>, <span class="string">&quot;password&quot;</span>);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">&quot;Connection Failed! Check output console&quot;</span>);</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (connection != <span class="keyword">null</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;You made it, take control your database now!&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Failed to make connection!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : Xuqihan <br/>
+        
+        原文链接 : <a href="">http://example.com/2022/04/29/07.jdbc%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share"
+  style="margin-top: -2rem"
+  data-wechat-qrcode-title="<p>微信扫一扫</p>"
+  data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>"
+   data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter" 
+  
+>
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async>
+  
+
+  
+    <div id="reward">
+  
+    <p id="reward-meta">知识 & 情怀 | 二者兼得</p>
+  
+  <button id="reward-btn">
+    
+    <span>投食</span>
+  </button>
+  <div id="reward-qrcode">
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/wechat.png" alt="微信扫一扫, 向我投食">
+        <p class="qrcode-meta">微信扫一扫, 向我投食</p>
+      </div>
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/alipay.png" alt="支付宝扫一扫, 向我投食">
+        <p class="qrcode-meta">支付宝扫一扫, 向我投食</p>
+      </div>
+    
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    let button = document.querySelector('#reward-btn'),
+      qrcode = document.querySelector('#reward-qrcode'),
+      display = false;
+    
+    button.addEventListener('click', () => {
+      qrcode.style.display = display ? 'none' : 'block'
+      display = !display
+    }, false)
+  })()
+</script>
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/JDBC/">
+              #JDBC
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2022/04/29/08.jdbc%20statements/" target="_self">08.jdbc statements</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2022/04/29/06.JDBC%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E7%B1%BB%E5%9E%8B/" target="_self">06.jdbc驱动程序类型</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz",
+      appKey: "WaR7nrzhliHj9aVwdQzkdlGd",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz", "WaR7nrzhliHj9aVwdQzkdlGd");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a target="_blank" rel="noopener" href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a target="_blank" rel="noopener" href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+      路遥星辞，过往不念
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2021, 10, 13).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

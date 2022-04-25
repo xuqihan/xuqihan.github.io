@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com" />
+  
+  
+  
+  <title>08.jdbc statements | Xuqihan</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JDBC,JDBC," />
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="xuqihan_BK">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  
+<script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">Xuqihan.com</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a 
+              href="/"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_blank"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_blank"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_blank"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a 
+              href="/friends/"
+              target="_blank"
+            >
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_blank"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="">
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a 
+                    href="https://github.com/xuqihan" 
+                    target="_blank"
+                  >
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a 
+                    href="https://www.zhihu.com/people/godbmw/activities" 
+                    target="_blank"
+                  >
+                    微博
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>08.jdbc statements</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2022-04-29
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/JDBC/">
+            JDBC
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="08.jdbc statements"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>当获得了与数据库的连接后，就可以与数据库进行交互了。 JDBC <code>Statement</code>，<code>CallableStatement</code>和<code>PreparedStatement</code>接口定义了可用于发送SQL或<em>PL/SQL</em>命令，并从数据库接收数据的方法和属性。</p>
+<p>它们还定义了有助于在Java和SQL数据类型的数据类型差异转换的方法。<br>下表提供了每个接口定义，以及使用这些接口的目的的总结。</p>
+<table>
+<thead>
+<tr>
+<th>接口</th>
+<th>推荐使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Statement</code></td>
+<td>用于对数据库进行通用访问，在运行时使用静态SQL语句时很有用。 <code>Statement</code>接口不能接受参数。</td>
+</tr>
+<tr>
+<td><code>PreparedStatement</code></td>
+<td>当计划要多次使用SQL语句时使用。<code>PreparedStatement</code>接口在运行时接受输入参数。</td>
+</tr>
+<tr>
+<td><code>CallableStatement</code></td>
+<td>当想要访问数据库存储过程时使用。<code>CallableStatement</code>接口也可以接受运行时输入参数。</td>
+</tr>
+</tbody></table>
+<h2 id="1-Statement对象"><a href="#1-Statement对象" class="headerlink" title="1. Statement对象"></a>1. Statement对象</h2><h3 id="1-1-创建Statement对象"><a href="#1-1-创建Statement对象" class="headerlink" title="1.1. 创建Statement对象"></a>1.1. 创建Statement对象</h3><p>在使用<code>Statement</code>对象执行SQL语句之前，需要使用<code>Connection</code>对象的<code>createStatement()</code>方法创建一个<code>Statement</code>对象，如以下示例所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Statement stmt = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   stmt = conn.createStatement( );</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>在创建<code>Statement</code>对象后，可以使用它来执行一个SQL语句，它有三个执行方法可以执行。它们分别是 - </p>
+<ul>
+<li><code>boolean execute (String SQL)</code> ： 如果可以检索到<code>ResultSet</code>对象，则返回一个布尔值<code>true</code>; 否则返回<code>false</code>。使用此方法执行SQL<code>DDL</code>语句或需要使用真正的动态SQL，可使用于执行创建数据库，创建表的SQL语句等等。</li>
+<li><code>int executeUpdate (String SQL):</code> 返回受SQL语句执行影响的行数。使用此方法执行预期会影响多行的SQL语句，例如:<code>INSERT</code>，<code>UPDATE</code>或<code>DELETE</code>语句。</li>
+<li><code>ResultSet executeQuery(String SQL)：</code>返回一个<code>ResultSet</code>对象。 当您希望获得结果集时，请使用此方法，就像使用<code>SELECT</code>语句一样。</li>
+</ul>
+<h3 id="1-2-关闭Statement对象"><a href="#1-2-关闭Statement对象" class="headerlink" title="1.2. 关闭Statement对象"></a>1.2. 关闭Statement对象</h3><p>就像关闭一个<code>Connection</code>对象一样，以保存数据库资源一样，由于同样的原因，还应该关闭<code>Statement</code>对象。</p>
+<p>一个简单的调用<code>close()</code>方法将执行该作业(工作)。 如果先关闭<code>Connection</code>对象，它也会关闭<code>Statement</code>对象。 但是，应该始终显式关闭<code>Statement</code>对象，以确保正确的清理顺序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Statement stmt = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   stmt = conn.createStatement( );</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">   stmt.close();</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>为了更好的理解，建议学习<a target="_blank" rel="noopener" href="http://www.yiibai.com/jdbc/statement-object-example.html">Statment示例教程</a> 。 </p>
+<h2 id="2-PreparedStatement对象"><a href="#2-PreparedStatement对象" class="headerlink" title="2. PreparedStatement对象"></a>2. PreparedStatement对象</h2><p><code>PreparedStatement</code>接口扩展了<code>Statement</code>接口，它添加了比<code>Statement</code>对象更好一些优点的功能。</p>
+<p>此语句可以动态地提供/接受参数。</p>
+<h3 id="2-1-创建PreparedStatement对象"><a href="#2-1-创建PreparedStatement对象" class="headerlink" title="2.1 创建PreparedStatement对象"></a>2.1 创建PreparedStatement对象</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PreparedStatement pstmt = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   String SQL = <span class="string">&quot;Update Employees SET age = ? WHERE id = ?&quot;</span>;</span><br><span class="line">   pstmt = conn.prepareStatement(SQL);</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>JDBC中的所有参数都由 <code>?</code> 符号作为占位符，这被称为参数标记。 在执行SQL语句之前，必须为每个参数(占位符)提供值。</p>
+<p><code>setXXX()</code>方法将值绑定到参数，其中<code>XXX</code>表示要绑定到输入参数的值的Java数据类型。 如果忘记提供绑定值，则将会抛出一个<code>SQLException</code>。</p>
+<p>每个参数标记是它其顺序位置引用。第一个标记表示位置<code>1</code>，下一个位置<code>2</code>等等。 该方法与Java数组索引不同(它不从<code>0</code>开始)。</p>
+<p>所有<code>Statement</code>对象与数据库交互的方法(a)<code>execute()</code>，(b)<code>executeQuery()</code>和(c)<code>executeUpdate()</code>也可以用于<code>PreparedStatement</code>对象。 但是，这些方法被修改为可以使用输入参数的SQL语句。</p>
+<h3 id="2-2-关闭PreparedStatement对象"><a href="#2-2-关闭PreparedStatement对象" class="headerlink" title="2.2. 关闭PreparedStatement对象"></a>2.2. 关闭PreparedStatement对象</h3><p>就像关闭<code>Statement</code>对象一样，由于同样的原因(节省数据库系统资源)，也应该关闭<code>PreparedStatement</code>对象。</p>
+<p>简单的调用<code>close()</code>方法将执行关闭。 如果先关闭<code>Connection</code>对象，它也会关闭<code>PreparedStatement</code>对象。 但是，应该始终显式关闭<code>PreparedStatement</code>对象，以确保以正确顺序清理资源。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PreparedStatement pstmt = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   String SQL = <span class="string">&quot;Update Employees SET age = ? WHERE id = ?&quot;</span>;</span><br><span class="line">   pstmt = conn.prepareStatement(SQL);</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">   pstmt.close();</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>为了更好的理解，建议学习<a target="_blank" rel="noopener" href="http://www.yiibai.com/jdbc/preparestatement-object-example.html">PreparedStatement示例代码</a> 。</p>
+<h2 id="3-CallableStatement对象"><a href="#3-CallableStatement对象" class="headerlink" title="3. CallableStatement对象"></a>3. CallableStatement对象</h2><p>类似<code>Connection</code>对象创建<code>Statement</code>和<code>PreparedStatement</code>对象一样，它还可以使用同样的方式创建<code>CallableStatement</code>对象，该对象将用于执行对数据库存储过程的调用。</p>
+<h3 id="3-1-创建CallableStatement对象"><a href="#3-1-创建CallableStatement对象" class="headerlink" title="3.1. 创建CallableStatement对象"></a>3.1. 创建CallableStatement对象</h3><p>假设需要执行以下Oracle存储过程 -</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> getEmpName </span><br><span class="line">   (EMP_ID <span class="keyword">IN</span> NUMBER, EMP_FIRST <span class="keyword">OUT</span> <span class="type">VARCHAR</span>) <span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">SELECT</span> <span class="keyword">first</span> <span class="keyword">INTO</span> EMP_FIRST</span><br><span class="line">   <span class="keyword">FROM</span> Employees</span><br><span class="line">   <span class="keyword">WHERE</span> ID <span class="operator">=</span> EMP_ID;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="keyword">SQL</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：上面的存储过程是针对Oracle编写的，但是如果您使用MySQL数据库，可使用以下方式来编写MySQL相同的存储过程，如下在EMP数据库中创建它 -</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">DELIMITER $$</span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> IF <span class="keyword">EXISTS</span> `EMP`.`getEmpName` $$</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> `EMP`.`getEmpName` </span><br><span class="line">   (<span class="keyword">IN</span> EMP_ID <span class="type">INT</span>, <span class="keyword">OUT</span> EMP_FIRST <span class="type">VARCHAR</span>(<span class="number">255</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">SELECT</span> <span class="keyword">first</span> <span class="keyword">INTO</span> EMP_FIRST</span><br><span class="line">   <span class="keyword">FROM</span> Employees</span><br><span class="line">   <span class="keyword">WHERE</span> ID <span class="operator">=</span> EMP_ID;</span><br><span class="line"><span class="keyword">END</span> $$</span><br><span class="line"></span><br><span class="line">DELIMITER ;</span><br><span class="line"><span class="keyword">SQL</span></span><br></pre></td></tr></table></figure>
+
+<p>存在三种类型的参数：<code>IN</code>，<code>OUT</code>和<code>INOUT</code>。 <code>PreparedStatement</code>对象只使用<code>IN</code>参数。<code>CallableStatement</code>对象可以使用上面三个参数类型。</p>
+<p>以下是上面三种类型参数的定义 -</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IN</td>
+<td>创建SQL语句时其参数值是未知的。 使用<code>setXXX()</code>方法将值绑定到<code>IN</code>参数。</td>
+</tr>
+<tr>
+<td>OUT</td>
+<td>由SQL语句返回的参数值。可以使用<code>getXXX()</code>方法从OUT参数中检索值。</td>
+</tr>
+<tr>
+<td>INOUT</td>
+<td>提供输入和输出值的参数。使用<code>setXXX()</code>方法绑定变量并使用<code>getXXX()</code>方法检索值。</td>
+</tr>
+</tbody></table>
+<p>以下代码片段显示了如何使用<code>Connection.prepareCall()</code>方法根据上述存储过程来实例化一个<code>CallableStatement</code>对象 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CallableStatement cstmt = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   String strSQL = <span class="string">&quot;&#123;call getEmpName (?, ?)&#125;&quot;</span>;</span><br><span class="line">   cstmt = conn.prepareCall (SQL);</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>String变量<code>strSQL</code>表示存储过程，带有两个参数占位符。</p>
+<p>使用<code>CallableStatement</code>对象就像使用<code>PreparedStatement</code>对象一样。 在执行语句之前，必须将值绑定到所有参数，否则将抛出一个<code>SQLException</code>异常。</p>
+<p>如果有<code>IN</code>参数，只需遵循适用于<code>PreparedStatement</code>对象的相同规则和技术; 使用与绑定的Java数据类型相对应的<code>setXXX()</code>方法。</p>
+<p>使用<code>OUT</code>和<code>INOUT</code>参数时，必须使用一个额外的<code>CallableStatement</code>对象方法<code>registerOutParameter()</code>。 <code>registerOutParameter()</code>方法将JDBC数据类型绑定到存储过程并返回预期数据类型。</p>
+<p>当调用存储过程，可以使用适当的<code>getXXX()</code>方法从<code>OUT</code>参数中检索该值。 此方法将检索到的SQL类型的值转换为对应的Java数据类型。</p>
+<h2 id="关闭CallableStatement对象"><a href="#关闭CallableStatement对象" class="headerlink" title="关闭CallableStatement对象"></a>关闭CallableStatement对象</h2><p>就像关闭其他<code>Statement</code>对象一样，由于同样的原因(节省数据库系统资源)，还应该关闭<code>CallableStatement</code>对象。</p>
+<p>简单的调用<code>close()</code>方法将执行关闭<code>CallableStatemen</code>t对象。 如果先关闭<code>Connection</code>对象，它也会关闭<code>CallableStatement</code>对象。 但是，应该始终显式关闭<code>CallableStatement</code>对象，以确保按正确顺序的清理资源。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CallableStatement cstmt = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   String SQL = <span class="string">&quot;&#123;call getEmpName (?, ?)&#125;&quot;</span>;</span><br><span class="line">   cstmt = conn.prepareCall (SQL);</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">   . . .</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">   cstmt.close();</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>为了更好的理解，建议参考学习<a target="_blank" rel="noopener" href="http://www.yiibai.com/jdbc/callablestatement-object-example.html">Callable示例代码</a>。</p>
+
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : Xuqihan <br/>
+        
+        原文链接 : <a href="">http://example.com/2022/04/29/08.jdbc%20statements/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share"
+  style="margin-top: -2rem"
+  data-wechat-qrcode-title="<p>微信扫一扫</p>"
+  data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>"
+   data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter" 
+  
+>
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async>
+  
+
+  
+    <div id="reward">
+  
+    <p id="reward-meta">知识 & 情怀 | 二者兼得</p>
+  
+  <button id="reward-btn">
+    
+    <span>投食</span>
+  </button>
+  <div id="reward-qrcode">
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/wechat.png" alt="微信扫一扫, 向我投食">
+        <p class="qrcode-meta">微信扫一扫, 向我投食</p>
+      </div>
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/alipay.png" alt="支付宝扫一扫, 向我投食">
+        <p class="qrcode-meta">支付宝扫一扫, 向我投食</p>
+      </div>
+    
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    let button = document.querySelector('#reward-btn'),
+      qrcode = document.querySelector('#reward-qrcode'),
+      display = false;
+    
+    button.addEventListener('click', () => {
+      qrcode.style.display = display ? 'none' : 'block'
+      display = !display
+    }, false)
+  })()
+</script>
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/JDBC/">
+              #JDBC
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2022/04/29/09.jdbc%E7%BB%93%E6%9E%9C%E9%9B%86/" target="_self">09. jdbc结果集</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2022/04/29/07.jdbc%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5/" target="_self">07.jdbc数据库连接</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz",
+      appKey: "WaR7nrzhliHj9aVwdQzkdlGd",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz", "WaR7nrzhliHj9aVwdQzkdlGd");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a target="_blank" rel="noopener" href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a target="_blank" rel="noopener" href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+      路遥星辞，过往不念
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2021, 10, 13).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

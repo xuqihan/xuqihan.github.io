@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com" />
+  
+  
+  
+  <title>10.jdbc数据集 | Xuqihan</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JDBC,JDBC," />
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="xuqihan_BK">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  
+<script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">Xuqihan.com</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a 
+              href="/"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_blank"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_blank"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_blank"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a 
+              href="/friends/"
+              target="_blank"
+            >
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_blank"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="">
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a 
+                    href="https://github.com/xuqihan" 
+                    target="_blank"
+                  >
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a 
+                    href="https://www.zhihu.com/people/godbmw/activities" 
+                    target="_blank"
+                  >
+                    微博
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>10.jdbc数据集</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2022-04-29
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/JDBC/">
+            JDBC
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="10.jdbc数据类型"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="DBC驱动程序将Java数据类型转换为适当的JDBC类型，然后将其发送到数据库。-它为大多数数据类型提供并使用默认映射。-例如，Java-int类型会被转换为SQL-INTEGER。-创建默认映射以提供到驱动程序时保持一致性。"><a href="#DBC驱动程序将Java数据类型转换为适当的JDBC类型，然后将其发送到数据库。-它为大多数数据类型提供并使用默认映射。-例如，Java-int类型会被转换为SQL-INTEGER。-创建默认映射以提供到驱动程序时保持一致性。" class="headerlink" title="DBC驱动程序将Java数据类型转换为适当的JDBC类型，然后将其发送到数据库。 它为大多数数据类型提供并使用默认映射。 例如，Java int类型会被转换为SQL INTEGER。 创建默认映射以提供到驱动程序时保持一致性。"></a>DBC驱动程序将Java数据类型转换为适当的JDBC类型，然后将其发送到数据库。 它为大多数数据类型提供并使用默认映射。 例如，Java <code>int</code>类型会被转换为SQL <code>INTEGER</code>。 创建默认映射以提供到驱动程序时保持一致性。</h2><p>下表总结了当调用<code>PreparedStatement</code>或<code>CallableStatement</code>对象或<code>ResultSet.updateXXX()</code>方法的<code>setXXX()</code>方法时，将Java数据类型转换为的默认JDBC数据类型。</p>
+<table>
+<thead>
+<tr>
+<th>SQL类型</th>
+<th>JDBC/Java类型</th>
+<th>setXXX</th>
+<th>updateXXX</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VARCHAR</td>
+<td>java.lang.String</td>
+<td>setString</td>
+<td>updateString</td>
+</tr>
+<tr>
+<td>CHAR</td>
+<td>java.lang.String</td>
+<td>setString</td>
+<td>updateString</td>
+</tr>
+<tr>
+<td>LONGVARCHAR</td>
+<td>java.lang.String</td>
+<td>setString</td>
+<td>updateString</td>
+</tr>
+<tr>
+<td>BIT</td>
+<td>boolean</td>
+<td>setBoolean</td>
+<td>updateBoolean</td>
+</tr>
+<tr>
+<td>NUMERIC</td>
+<td>java.math.BigDecimal</td>
+<td>setBigDecimal</td>
+<td>updateBigDecimal</td>
+</tr>
+<tr>
+<td>TINYINT</td>
+<td>byte</td>
+<td>setByte</td>
+<td>updateByte</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>short</td>
+<td>setShort</td>
+<td>updateShort</td>
+</tr>
+<tr>
+<td>INTEGER</td>
+<td>int</td>
+<td>setInt</td>
+<td>updateInt</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>long</td>
+<td>setLong</td>
+<td>updateLong</td>
+</tr>
+<tr>
+<td>REAL</td>
+<td>float</td>
+<td>setFloat</td>
+<td>updateFloat</td>
+</tr>
+<tr>
+<td>FLOAT</td>
+<td>float</td>
+<td>setFloat</td>
+<td>updateFloat</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>double</td>
+<td>setDouble</td>
+<td>updateDouble</td>
+</tr>
+<tr>
+<td>VARBINARY</td>
+<td>byte[ ]</td>
+<td>setBytes</td>
+<td>updateBytes</td>
+</tr>
+<tr>
+<td>BINARY</td>
+<td>byte[ ]</td>
+<td>setBytes</td>
+<td>updateBytes</td>
+</tr>
+<tr>
+<td>DATE</td>
+<td>java.sql.Date</td>
+<td>setDate</td>
+<td>updateDate</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>java.sql.Time</td>
+<td>setTime</td>
+<td>updateTime</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>java.sql.Timestamp</td>
+<td>setTimestamp</td>
+<td>updateTimestamp</td>
+</tr>
+<tr>
+<td>CLOB</td>
+<td>java.sql.Clob</td>
+<td>setClob</td>
+<td>updateClob</td>
+</tr>
+<tr>
+<td>BLOB</td>
+<td>java.sql.Blob</td>
+<td>setBlob</td>
+<td>updateBlob</td>
+</tr>
+<tr>
+<td>ARRAY</td>
+<td>java.sql.Array</td>
+<td>setARRAY</td>
+<td>updateARRAY</td>
+</tr>
+<tr>
+<td>REF</td>
+<td>java.sql.Ref</td>
+<td>SetRef</td>
+<td>updateRef</td>
+</tr>
+<tr>
+<td>STRUCT</td>
+<td>java.sql.Struct</td>
+<td>SetStruct</td>
+<td>updateStruct</td>
+</tr>
+</tbody></table>
+<p>JDBC 3.0增强了对<code>BLOB</code>，<code>CLOB</code>，<code>ARRAY</code>和<code>REF</code>数据类型的支持。 <code>ResultSet</code>对象现在具有<code>updateBLOB()</code>，<code>updateCLOB()</code>，<code>updateArray()</code>和<code>updateRef()</code>方法，使您能够直接操作数据库服务器上的相应数据。</p>
+<p><code>setXXX()</code>和<code>updateXXX()</code>方法可以将特定的Java类型转换为特定的JDBC数据类型。 方法<code>setObject()</code>和<code>updateObject()</code>可以将几乎任何Java类型映射到JDBC数据类型。</p>
+<p><code>ResultSet</code>对象为每个数据类型提供相应的<code>getXXX()</code>方法来检索列值。每个方法都可以使用列名或其序数位置来检索列值。</p>
+<table>
+<thead>
+<tr>
+<th>SQL类型</th>
+<th>JDBC/Java类型</th>
+<th>setXXX</th>
+<th>updateXXX</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VARCHAR</td>
+<td>java.lang.String</td>
+<td>setString</td>
+<td>getString</td>
+</tr>
+<tr>
+<td>CHAR</td>
+<td>java.lang.String</td>
+<td>setString</td>
+<td>getString</td>
+</tr>
+<tr>
+<td>LONGVARCHAR</td>
+<td>java.lang.String</td>
+<td>setString</td>
+<td>getString</td>
+</tr>
+<tr>
+<td>BIT</td>
+<td>boolean</td>
+<td>setBoolean</td>
+<td>getBoolean</td>
+</tr>
+<tr>
+<td>NUMERIC</td>
+<td>java.math.BigDecimal</td>
+<td>setBigDecimal</td>
+<td>getBigDecimal</td>
+</tr>
+<tr>
+<td>TINYINT</td>
+<td>byte</td>
+<td>setByte</td>
+<td>getByte</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>short</td>
+<td>setShort</td>
+<td>getShort</td>
+</tr>
+<tr>
+<td>INTEGER</td>
+<td>int</td>
+<td>setInt</td>
+<td>getInt</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>long</td>
+<td>setLong</td>
+<td>getLong</td>
+</tr>
+<tr>
+<td>REAL</td>
+<td>float</td>
+<td>setFloat</td>
+<td>getFloat</td>
+</tr>
+<tr>
+<td>FLOAT</td>
+<td>float</td>
+<td>setFloat</td>
+<td>getFloat</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>double</td>
+<td>setDouble</td>
+<td>getDouble</td>
+</tr>
+<tr>
+<td>VARBINARY</td>
+<td>byte[ ]</td>
+<td>setBytes</td>
+<td>getBytes</td>
+</tr>
+<tr>
+<td>BINARY</td>
+<td>byte[ ]</td>
+<td>setBytes</td>
+<td>getBytes</td>
+</tr>
+<tr>
+<td>DATE</td>
+<td>java.sql.Date</td>
+<td>setDate</td>
+<td>getDate</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>java.sql.Time</td>
+<td>setTime</td>
+<td>getTime</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>java.sql.Timestamp</td>
+<td>setTimestamp</td>
+<td>getTimestamp</td>
+</tr>
+<tr>
+<td>CLOB</td>
+<td>java.sql.Clob</td>
+<td>setClob</td>
+<td>getClob</td>
+</tr>
+<tr>
+<td>BLOB</td>
+<td>java.sql.Blob</td>
+<td>setBlob</td>
+<td>getBlob</td>
+</tr>
+<tr>
+<td>ARRAY</td>
+<td>java.sql.Array</td>
+<td>setARRAY</td>
+<td>getARRAY</td>
+</tr>
+<tr>
+<td>REF</td>
+<td>java.sql.Ref</td>
+<td>SetRef</td>
+<td>getRef</td>
+</tr>
+<tr>
+<td>STRUCT</td>
+<td>java.sql.Struct</td>
+<td>SetStruct</td>
+<td>getStruct</td>
+</tr>
+</tbody></table>
+<h2 id="日期和时间数据类型"><a href="#日期和时间数据类型" class="headerlink" title="日期和时间数据类型"></a>日期和时间数据类型</h2><p><code>java.sql.Date</code>类映射到SQL <code>DATE</code>类型，<code>java.sql.Time</code>和<code>java.sql.Timestamp</code>类分别映射到SQL <code>TIME</code>和SQL <code>TIMESTAMP</code>数据类型。</p>
+<p>以下示例显示了<code>Date</code>和<code>Time</code>类如何格式化为标准Java日期和时间值以匹配SQL数据类型要求。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.sql.Date;</span><br><span class="line"><span class="keyword">import</span> java.sql.Time;</span><br><span class="line"><span class="keyword">import</span> java.sql.Timestamp;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SqlDateTime</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      <span class="comment">//Get standard date and time</span></span><br><span class="line">      java.util.Date javaDate = <span class="keyword">new</span> java.util.Date();</span><br><span class="line">      <span class="keyword">long</span> javaTime = javaDate.getTime();</span><br><span class="line">      System.out.println(<span class="string">&quot;The Java Date is:&quot;</span> + </span><br><span class="line">             javaDate.toString());</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Get and display SQL DATE</span></span><br><span class="line">      java.sql.Date sqlDate = <span class="keyword">new</span> java.sql.Date(javaTime);</span><br><span class="line">      System.out.println(<span class="string">&quot;The SQL DATE is: &quot;</span> + </span><br><span class="line">             sqlDate.toString());</span><br><span class="line"></span><br><span class="line">      <span class="comment">//Get and display SQL TIME</span></span><br><span class="line">      java.sql.Time sqlTime = <span class="keyword">new</span> java.sql.Time(javaTime);</span><br><span class="line">      System.out.println(<span class="string">&quot;The SQL TIME is: &quot;</span> + </span><br><span class="line">             sqlTime.toString());</span><br><span class="line">      <span class="comment">//Get and display SQL TIMESTAMP</span></span><br><span class="line">      java.sql.Timestamp sqlTimestamp =</span><br><span class="line">      <span class="keyword">new</span> java.sql.Timestamp(javaTime);</span><br><span class="line">      System.out.println(<span class="string">&quot;The SQL TIMESTAMP is: &quot;</span> + </span><br><span class="line">             sqlTimestamp.toString());</span><br><span class="line">     &#125;<span class="comment">//end main</span></span><br><span class="line">&#125;<span class="comment">//end SqlDateTime</span></span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+
+<p>编译并执行上面代码，得到以下结果 - </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">F:\worksp\jdbc&gt;javac SqlDateTime.java</span><br><span class="line"></span><br><span class="line">F:\worksp\jdbc&gt;java SqlDateTime</span><br><span class="line">The Java Date is:Wed May 31 23:54:57 CST 2017</span><br><span class="line">The SQL DATE is: 2017-05-31</span><br><span class="line">The SQL TIME is: 23:54:57</span><br><span class="line">The SQL TIMESTAMP is: 2017-05-31 23:54:57.937</span><br><span class="line"></span><br><span class="line">F:\worksp\jdbc&gt;</span><br><span class="line">Shell</span><br></pre></td></tr></table></figure>
+
+<h2 id="处理NULL值"><a href="#处理NULL值" class="headerlink" title="处理NULL值"></a>处理NULL值</h2><p>SQL使用<code>NULL</code>值和Java使用<code>null</code>是不同的概念。 所以，要在Java中处理SQL <code>NULL</code>值，可以使用三种策略 -</p>
+<ul>
+<li>避免使用返回原始数据类型的<code>getXXX()</code>方法。</li>
+<li>对原始数据类型使用包装类，并使用<code>ResultSet</code>对象的<code>wasNull()</code>方法来测试接收<code>getXXX()</code>方法的返回值的包装器类变量是否应设置为<code>null</code>。</li>
+<li>使用原始数据类型和<code>ResultSet</code>对象的<code>wasNull()</code>方法来测试接收到由<code>getXXX()</code>方法返回的值的原始变量是否应设置为表示<code>NULL</code>的可接受值。</li>
+</ul>
+<p>下面是一个用来处理<code>NULL</code>值的例子 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Statement stmt = conn.createStatement( );</span><br><span class="line">String sql = <span class="string">&quot;SELECT id, first, last, age FROM Employees&quot;</span>;</span><br><span class="line">ResultSet rs = stmt.executeQuery(sql);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> id = rs.getInt(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">if</span>( rs.wasNull( ) ) &#123;</span><br><span class="line">   id = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : Xuqihan <br/>
+        
+        原文链接 : <a href="">http://example.com/2022/04/29/10.jdbc%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share"
+  style="margin-top: -2rem"
+  data-wechat-qrcode-title="<p>微信扫一扫</p>"
+  data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>"
+   data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter" 
+  
+>
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async>
+  
+
+  
+    <div id="reward">
+  
+    <p id="reward-meta">知识 & 情怀 | 二者兼得</p>
+  
+  <button id="reward-btn">
+    
+    <span>投食</span>
+  </button>
+  <div id="reward-qrcode">
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/wechat.png" alt="微信扫一扫, 向我投食">
+        <p class="qrcode-meta">微信扫一扫, 向我投食</p>
+      </div>
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/alipay.png" alt="支付宝扫一扫, 向我投食">
+        <p class="qrcode-meta">支付宝扫一扫, 向我投食</p>
+      </div>
+    
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    let button = document.querySelector('#reward-btn'),
+      qrcode = document.querySelector('#reward-qrcode'),
+      display = false;
+    
+    button.addEventListener('click', () => {
+      qrcode.style.display = display ? 'none' : 'block'
+      display = !display
+    }, false)
+  })()
+</script>
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/JDBC/">
+              #JDBC
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2022/04/29/12.jdbc%E4%BA%8B%E5%8A%A1%E6%8F%90%E4%BA%A4%E5%9B%9E%E6%BB%9A/" target="_self">12.jdbc事物提交回顾</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2022/04/29/09.jdbc%E7%BB%93%E6%9E%9C%E9%9B%86/" target="_self">09. jdbc结果集</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz",
+      appKey: "WaR7nrzhliHj9aVwdQzkdlGd",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz", "WaR7nrzhliHj9aVwdQzkdlGd");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a target="_blank" rel="noopener" href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a target="_blank" rel="noopener" href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+      路遥星辞，过往不念
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2021, 10, 13).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
