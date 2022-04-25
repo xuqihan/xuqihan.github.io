@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com" />
+  
+  
+  
+  <title>17.jdbc Prepare statement对象执行批量处理 | Xuqihan</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JDBC," />
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="xuqihan_BK">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  
+<script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">Xuqihan.com</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a 
+              href="/"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_blank"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_blank"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_blank"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a 
+              href="/friends/"
+              target="_blank"
+            >
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_blank"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="">
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a 
+                    href="https://github.com/xuqihan" 
+                    target="_blank"
+                  >
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a 
+                    href="https://www.zhihu.com/people/godbmw/activities" 
+                    target="_blank"
+                  >
+                    微博
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>17.jdbc Prepare statement对象执行批量处理</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2021-11-15
+    </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="17.JDBC PrepareStatement对象执行批量处理"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="以下是使用PrepareStatement对象进行批处理的典型步骤顺序"><a href="#以下是使用PrepareStatement对象进行批处理的典型步骤顺序" class="headerlink" title="以下是使用PrepareStatement对象进行批处理的典型步骤顺序 -"></a>以下是使用<code>PrepareStatement</code>对象进行批处理的典型步骤顺序 -</h2><ul>
+<li>使用占位符创建SQL语句。</li>
+<li>使用<code>prepareStatement()</code>方法创建<code>PrepareStatement</code>对象。</li>
+<li>使用<code>setAutoCommit()</code>将自动提交设置为<code>false</code>。</li>
+<li>使用<code>addBatch()</code>方法在创建的<code>Statement</code>对象上添加SQL语句到批处理中。</li>
+<li>在创建的<code>Statement</code>对象上使用<code>executeBatch()</code>方法执行所有SQL语句。</li>
+<li>最后，使用<code>commit()</code>方法提交所有更改。</li>
+</ul>
+<p>此示例代码是基于前面章节中完成的环境和数据库设置编写的。</p>
+<p>以下代码片段提供了使用<code>PrepareStatement</code>对象的批量更新示例，将下面代码保存到文件：<em>BatchingWithPrepareStatement.java</em> -</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span> Import required packages</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> See more detail <span class="keyword">at</span> http:<span class="operator">/</span><span class="operator">/</span>www.yiibai.com<span class="operator">/</span>jdbc<span class="operator">/</span></span><br><span class="line"></span><br><span class="line">import java.sql.<span class="operator">*</span>;</span><br><span class="line"></span><br><span class="line">public class BatchingWithPrepareStatement &#123;</span><br><span class="line">   <span class="operator">/</span><span class="operator">/</span> JDBC driver name <span class="keyword">and</span> database URL</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">final</span> String JDBC_DRIVER <span class="operator">=</span> &quot;com.mysql.jdbc.Driver&quot;;  </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">final</span> String DB_URL <span class="operator">=</span> &quot;jdbc:mysql://localhost/EMP&quot;;</span><br><span class="line"></span><br><span class="line">   <span class="operator">/</span><span class="operator">/</span>  Database credentials</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">final</span> String <span class="keyword">USER</span> <span class="operator">=</span> &quot;root&quot;;</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">final</span> String PASS <span class="operator">=</span> &quot;123456&quot;;</span><br><span class="line"></span><br><span class="line">   public <span class="keyword">static</span> void main(String[] args) &#123;</span><br><span class="line">   Connection conn <span class="operator">=</span> <span class="keyword">null</span>;</span><br><span class="line">   PreparedStatement stmt <span class="operator">=</span> <span class="keyword">null</span>;</span><br><span class="line">   try&#123;</span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> Register JDBC driver</span><br><span class="line">      Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">Open</span> a connection</span><br><span class="line">      System.out.println(&quot;Connecting to database...&quot;);</span><br><span class="line">      conn <span class="operator">=</span> DriverManager.getConnection(DB_URL,<span class="keyword">USER</span>,PASS);</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">Create</span> <span class="keyword">SQL</span> statement</span><br><span class="line">      String <span class="keyword">SQL</span> <span class="operator">=</span> &quot;INSERT INTO Employees(id,first,last,age) &quot; <span class="operator">+</span></span><br><span class="line">                   &quot;VALUES(?, ?, ?, ?)&quot;;</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">Create</span> preparedStatemen</span><br><span class="line">      System.out.println(&quot;Creating statement...&quot;);</span><br><span class="line">      stmt <span class="operator">=</span> conn.prepareStatement(<span class="keyword">SQL</span>);</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">Set</span> auto<span class="operator">-</span><span class="keyword">commit</span> <span class="keyword">to</span> <span class="literal">false</span></span><br><span class="line">      conn.setAutoCommit(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">First</span>, let us <span class="keyword">select</span> <span class="keyword">all</span> the records <span class="keyword">and</span> display them.</span><br><span class="line">      printRows( stmt );</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">Set</span> the variables</span><br><span class="line">      stmt.setInt( <span class="number">1</span>, <span class="number">400</span> );</span><br><span class="line">      stmt.setString( <span class="number">2</span>, &quot;Python&quot; );</span><br><span class="line">      stmt.setString( <span class="number">3</span>, &quot;Zhang&quot; );</span><br><span class="line">      stmt.setInt( <span class="number">4</span>, <span class="number">33</span> );</span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">Add</span> it <span class="keyword">to</span> the batch</span><br><span class="line">      stmt.addBatch();</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">Set</span> the variables</span><br><span class="line">      stmt.setInt( <span class="number">1</span>, <span class="number">401</span> );</span><br><span class="line">      stmt.setString( <span class="number">2</span>, &quot;C++&quot; );</span><br><span class="line">      stmt.setString( <span class="number">3</span>, &quot;Huang&quot; );</span><br><span class="line">      stmt.setInt( <span class="number">4</span>, <span class="number">31</span> );</span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">Add</span> it <span class="keyword">to</span> the batch</span><br><span class="line">      stmt.addBatch();</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> <span class="keyword">Create</span> an <span class="type">int</span>[] <span class="keyword">to</span> <span class="keyword">hold</span> returned <span class="keyword">values</span></span><br><span class="line">      <span class="type">int</span>[] count <span class="operator">=</span> stmt.executeBatch();</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span>Explicitly <span class="keyword">commit</span> statements <span class="keyword">to</span> apply changes</span><br><span class="line">      conn.commit();</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> Again, let us <span class="keyword">select</span> <span class="keyword">all</span> the records <span class="keyword">and</span> display them.</span><br><span class="line">      printRows( stmt );</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> Clean<span class="operator">-</span>up environment</span><br><span class="line">      stmt.close();</span><br><span class="line">      conn.close();</span><br><span class="line">   &#125;catch(<span class="keyword">SQLException</span> se)&#123;</span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span>Handle errors <span class="keyword">for</span> JDBC</span><br><span class="line">      se.printStackTrace();</span><br><span class="line">   &#125;catch(Exception e)&#123;</span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span>Handle errors <span class="keyword">for</span> Class.forName</span><br><span class="line">      e.printStackTrace();</span><br><span class="line">   &#125;finally&#123;</span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span>finally block used <span class="keyword">to</span> <span class="keyword">close</span> resources</span><br><span class="line">      try&#123;</span><br><span class="line">         if(stmt<span class="operator">!=</span><span class="keyword">null</span>)</span><br><span class="line">            stmt.close();</span><br><span class="line">      &#125;catch(<span class="keyword">SQLException</span> se2)&#123;</span><br><span class="line">      &#125;<span class="operator">/</span><span class="operator">/</span> nothing we can do</span><br><span class="line">      try&#123;</span><br><span class="line">         if(conn<span class="operator">!=</span><span class="keyword">null</span>)</span><br><span class="line">            conn.close();</span><br><span class="line">      &#125;catch(<span class="keyword">SQLException</span> se)&#123;</span><br><span class="line">         se.printStackTrace();</span><br><span class="line">      &#125;<span class="operator">/</span><span class="operator">/</span><span class="keyword">end</span> finally try</span><br><span class="line">   &#125;<span class="operator">/</span><span class="operator">/</span><span class="keyword">end</span> try</span><br><span class="line">   System.out.println(&quot;Goodbye!&quot;);</span><br><span class="line">&#125;<span class="operator">/</span><span class="operator">/</span><span class="keyword">end</span> main</span><br><span class="line"></span><br><span class="line">public <span class="keyword">static</span> void printRows(Statement stmt) throws <span class="keyword">SQLException</span>&#123;</span><br><span class="line">   System.out.println(&quot;Displaying available rows...&quot;);</span><br><span class="line">   <span class="operator">/</span><span class="operator">/</span> Let us <span class="keyword">select</span> <span class="keyword">all</span> the records <span class="keyword">and</span> display them.</span><br><span class="line">   String <span class="keyword">sql</span> <span class="operator">=</span> &quot;SELECT id, first, last, age FROM Employees&quot;;</span><br><span class="line">   ResultSet rs <span class="operator">=</span> stmt.executeQuery(<span class="keyword">sql</span>);</span><br><span class="line"></span><br><span class="line">   while(rs.next())&#123;</span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span>Retrieve <span class="keyword">by</span> <span class="keyword">column</span> name</span><br><span class="line">      <span class="type">int</span> id  <span class="operator">=</span> rs.getInt(&quot;id&quot;);</span><br><span class="line">      <span class="type">int</span> age <span class="operator">=</span> rs.getInt(&quot;age&quot;);</span><br><span class="line">      String <span class="keyword">first</span> <span class="operator">=</span> rs.getString(&quot;first&quot;);</span><br><span class="line">      String <span class="keyword">last</span> <span class="operator">=</span> rs.getString(&quot;last&quot;);</span><br><span class="line"></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span>Display <span class="keyword">values</span></span><br><span class="line">      System.out.print(&quot;ID: &quot; <span class="operator">+</span> id);</span><br><span class="line">      System.out.print(&quot;, Age: &quot; <span class="operator">+</span> age);</span><br><span class="line">      System.out.print(&quot;, First: &quot; <span class="operator">+</span> <span class="keyword">first</span>);</span><br><span class="line">      System.out.println(&quot;, Last: &quot; <span class="operator">+</span> <span class="keyword">last</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   System.out.println();</span><br><span class="line">   rs.close();</span><br><span class="line">&#125;<span class="operator">/</span><span class="operator">/</span><span class="keyword">end</span> printRows()</span><br><span class="line">&#125;<span class="operator">/</span><span class="operator">/</span><span class="keyword">end</span> JDBCExample</span><br><span class="line"><span class="keyword">SQL</span></span><br></pre></td></tr></table></figure>
+
+<p>编译上面代码，如下 - </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">F:\worksp\jdbc&gt;javac -Djava.ext.dirs=F:\worksp\jdbc\libs BatchingWithPrepareStatement.java</span><br><span class="line">Shell</span><br></pre></td></tr></table></figure>
+
+<p>执行上面代码如下所示 - </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Connecting to database...</span><br><span class="line">Thu Jun 01 04:46:38 CST 2017 WARN: Establishing SSL connection without server&#x27;s identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn&#x27;t set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to &#x27;false&#x27;. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.</span><br><span class="line">Creating statement...</span><br><span class="line">Displaying available rows...</span><br><span class="line">ID: 100, Age: 35, First: Max, Last: Su</span><br><span class="line">ID: 101, Age: 25, First: Wei, Last: Wang</span><br><span class="line">ID: 102, Age: 35, First: Xueyou, Last: Zhang</span><br><span class="line">ID: 103, Age: 30, First: Jack, Last: Ma</span><br><span class="line">ID: 106, Age: 28, First: Curry, Last: Stephen</span><br><span class="line">ID: 107, Age: 32, First: Kobe, Last: Bryant</span><br><span class="line">ID: 200, Age: 30, First: Curry, Last: Stephen</span><br><span class="line">ID: 201, Age: 35, First: Kobe, Last: Bryant</span><br><span class="line"></span><br><span class="line">Displaying available rows...</span><br><span class="line">ID: 100, Age: 35, First: Max, Last: Su</span><br><span class="line">ID: 101, Age: 25, First: Wei, Last: Wang</span><br><span class="line">ID: 102, Age: 35, First: Xueyou, Last: Zhang</span><br><span class="line">ID: 103, Age: 30, First: Jack, Last: Ma</span><br><span class="line">ID: 106, Age: 28, First: Curry, Last: Stephen</span><br><span class="line">ID: 107, Age: 32, First: Kobe, Last: Bryant</span><br><span class="line">ID: 200, Age: 30, First: Curry, Last: Stephen</span><br><span class="line">ID: 201, Age: 35, First: Kobe, Last: Bryant</span><br><span class="line">ID: 400, Age: 33, First: Python, Last: Zhang</span><br><span class="line">ID: 401, Age: 31, First: C++, Last: Huang</span><br><span class="line"></span><br><span class="line">Goodbye!</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : Xuqihan <br/>
+        
+        原文链接 : <a href="">http://example.com/2021/11/15/17.JDBC%20PrepareStatement%E5%AF%B9%E8%B1%A1%E6%89%A7%E8%A1%8C%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share"
+  style="margin-top: -2rem"
+  data-wechat-qrcode-title="<p>微信扫一扫</p>"
+  data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>"
+   data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter" 
+  
+>
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async>
+  
+
+  
+    <div id="reward">
+  
+    <p id="reward-meta">知识 & 情怀 | 二者兼得</p>
+  
+  <button id="reward-btn">
+    
+    <span>投食</span>
+  </button>
+  <div id="reward-qrcode">
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/wechat.png" alt="微信扫一扫, 向我投食">
+        <p class="qrcode-meta">微信扫一扫, 向我投食</p>
+      </div>
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/alipay.png" alt="支付宝扫一扫, 向我投食">
+        <p class="qrcode-meta">支付宝扫一扫, 向我投食</p>
+      </div>
+    
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    let button = document.querySelector('#reward-btn'),
+      qrcode = document.querySelector('#reward-qrcode'),
+      display = false;
+    
+    button.addEventListener('click', () => {
+      qrcode.style.display = display ? 'none' : 'block'
+      display = !display
+    }, false)
+  })()
+</script>
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/JDBC/">
+              #JDBC
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2021/11/15/16.jdbc%20statement%E5%AF%B9%E8%B1%A1%E6%89%A7%E8%A1%8C%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86/" target="_self">16.jdbc statement对象执行批量处理</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2021/11/15/18.JDBC%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E8%B0%83%E7%94%A8%20/" target="_self">18. jdbc 存储过程调用</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz",
+      appKey: "WaR7nrzhliHj9aVwdQzkdlGd",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz", "WaR7nrzhliHj9aVwdQzkdlGd");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a target="_blank" rel="noopener" href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a target="_blank" rel="noopener" href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+      路遥星辞，过往不念
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2021, 10, 13).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
